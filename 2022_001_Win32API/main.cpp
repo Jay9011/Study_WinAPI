@@ -7,6 +7,9 @@
 HINSTANCE hInst;                                // 현재 인스턴스
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름
+POINT mousePoint;
+POINT objectPos = { 500, 300 };
+POINT objectScale = { 100, 100 };
 
 // 함수 전방 선언:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -107,8 +110,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    // CreateWindowW()시 szWindowClass 리소스로 윈도우 정보를 찾아온다.
    // 올바른 정보를 찾은 후 CreateWindowW()로 윈도우를 생성한다.
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+   HWND hWnd = CreateWindowW(   // Kernel에서 받은 윈도우 ID (Kernel Object ID)
+       szWindowClass, szTitle, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
    // 윈도우 만들기에 실패하면 FALSE를 리턴
    if (!hWnd)
@@ -154,15 +157,80 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
+    /*
+    *   무효화 영역(Invalidate Rectangle)이 발생한 경우
+    *   
+    *   예) 창이 최소화 된 후 다시 그려질 때, 등...
+    * 
+    *   예전에는 창이 살짝 가려지는 것으로도 무효화 영역이 생겼으나, 지금은 비트맵 정보를 따로 가지면서 구려지는 것 만으로는 무효화 영역이 생기지 않는다.
+    *   (Alt + Tab 을 누르면 가려진 창도 화면이 바뀌는 모습을 실시간으로 볼 수 있다.)
+    */
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            
-            Rectangle(hdc, 10, 10, 1920, 1024);
 
+            // Device Context 를 만들어서 ID를 반환
+            HDC hdc = BeginPaint(hWnd, &ps);    // Device Context ( 그리기 작업을 수행하기 위해 필요한 Data들의 집합 )
+            // DC의 목적지는 hWnd
+            // DC의 기본 펜은 Black
+            // DC의 기본 브러쉬는 White
+
+            // 직접 펜을 만들어서 DC에 지급
+            HPEN hRenPen = CreatePen(PS_SOLID, 1, RGB(255, 0, 128));
+            HPEN hDefaultPen = (HPEN)SelectObject(hdc, hRenPen);    // 기존 Object를 type casting 해서 받아둠
+            HBRUSH hBlueBrush = CreateSolidBrush(RGB(0, 128, 255));
+            HBRUSH hDefaultBrush = (HBRUSH)SelectObject(hdc, hBlueBrush);
+            
+            Rectangle(hdc
+                    , objectPos.x - objectScale.x / 2
+                    , objectPos.y - objectScale.y / 2
+                    , objectPos.x + objectScale.x / 2
+                    , objectPos.y + objectScale.y / 2);
+
+            // 원래 Object로 되돌려줌
+            SelectObject(hdc, hDefaultPen);
+            SelectObject(hdc, hDefaultBrush);
+
+            // 다 쓴 Object 삭제 요청
+            DeleteObject(hRenPen);  // Kernel ID를 직접 지울 수 없기 때문에, 함수로 요청해야 한다.
+            DeleteObject(hBlueBrush);
+
+            // 그리기 종료
             EndPaint(hWnd, &ps);
         }
+        break;
+    case WM_KEYDOWN:
+    {
+        switch (wParam)
+        {
+        case VK_UP:
+            objectPos.y -= 10;
+            InvalidateRect(hWnd, nullptr, true);   // 강제로 무효화 영역이 발생했다고 알림
+            break;
+        case VK_DOWN:
+            objectPos.y += 10;
+            InvalidateRect(hWnd, nullptr, true);   // 강제로 무효화 영역이 발생했다고 알림
+            break;
+        case VK_LEFT:
+            objectPos.x -= 10;
+            InvalidateRect(hWnd, nullptr, true);   // 강제로 무효화 영역이 발생했다고 알림
+            break;
+        case VK_RIGHT:
+            objectPos.x += 10;
+            InvalidateRect(hWnd, nullptr, true);   // 강제로 무효화 영역이 발생했다고 알림
+            break;
+        case 'W':
+            break;
+        default:
+            break;
+        }
+    }
+        break;
+    case WM_LBUTTONDOWN:
+    {
+        mousePoint.x = LOWORD(lParam);
+        mousePoint.y = HIWORD(lParam);
+    }
         break;
     case WM_DESTROY:
         PostQuitMessage(0);
