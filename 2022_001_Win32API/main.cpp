@@ -3,13 +3,27 @@
 
 #define MAX_LOADSTRING 100
 
+// Object 정보들을 가진 vector 정의
+#include <vector>
+using std::vector;
+
+struct ObjInfo
+{
+    POINT objectPos = { 500, 300 };
+    POINT objectScale = { 100, 100 };
+};
+vector<ObjInfo> vecInfo;
+
+bool lBtnDown = false;
+POINT LeftTop;
+POINT RightBottom;
+
 // 전역 변수:
 HINSTANCE hInst;                                // 현재 인스턴스
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름
+HWND  g_hWnd;
 POINT mousePoint;
-POINT objectPos = { 500, 300 };
-POINT objectScale = { 100, 100 };
 
 // 함수 전방 선언:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -50,6 +64,8 @@ int APIENTRY wWinMain(_In_      HINSTANCE hInstance,     // 프로세스가 시�
 
     MSG msg;
 
+    //SetTimer(g_hWnd, 0, 1000 / 60, nullptr);
+
     // 기본 메시지 루프
     /*
     *   GetMessage
@@ -67,6 +83,8 @@ int APIENTRY wWinMain(_In_      HINSTANCE hInstance,     // 프로세스가 시�
             DispatchMessage(&msg);  // 해당 윈도우의 처리기에 메시지를 전달한다.
         }
     }
+
+    //KillTimer(g_hWnd, 0);
 
     return (int) msg.wParam;
 }
@@ -110,18 +128,18 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    // CreateWindowW()시 szWindowClass 리소스로 윈도우 정보를 찾아온다.
    // 올바른 정보를 찾은 후 CreateWindowW()로 윈도우를 생성한다.
-   HWND hWnd = CreateWindowW(   // Kernel에서 받은 윈도우 ID (Kernel Object ID)
+   g_hWnd = CreateWindowW(   // Kernel에서 받은 윈도우 ID (Kernel Object ID)
        szWindowClass, szTitle, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
    // 윈도우 만들기에 실패하면 FALSE를 리턴
-   if (!hWnd)
+   if (!g_hWnd)
    {
       return FALSE;
    }
 
    // 윈도우를 보여주고 업데이트한다.
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+   ShowWindow(g_hWnd, nCmdShow);
+   UpdateWindow(g_hWnd);
 
    return TRUE;
 }
@@ -181,11 +199,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             HBRUSH hBlueBrush = CreateSolidBrush(RGB(0, 128, 255));
             HBRUSH hDefaultBrush = (HBRUSH)SelectObject(hdc, hBlueBrush);
             
-            Rectangle(hdc
-                    , objectPos.x - objectScale.x / 2
-                    , objectPos.y - objectScale.y / 2
-                    , objectPos.x + objectScale.x / 2
-                    , objectPos.y + objectScale.y / 2);
+            for (size_t i = 0; i < vecInfo.size(); i++)
+            {
+                Rectangle(hdc
+                    , vecInfo[i].objectPos.x - vecInfo[i].objectScale.x / 2
+                    , vecInfo[i].objectPos.y - vecInfo[i].objectScale.y / 2
+                    , vecInfo[i].objectPos.x + vecInfo[i].objectScale.x / 2
+                    , vecInfo[i].objectPos.y + vecInfo[i].objectScale.y / 2
+                    );
+            }
+
+            if (lBtnDown)
+            {
+                Rectangle(hdc
+                    , LeftTop.x, LeftTop.y
+                    , RightBottom.x, RightBottom.y);
+            }
 
             // 원래 Object로 되돌려줌
             SelectObject(hdc, hDefaultPen);
@@ -204,19 +233,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         switch (wParam)
         {
         case VK_UP:
-            objectPos.y -= 10;
+            //objectPos.y -= 10;
             InvalidateRect(hWnd, nullptr, true);   // 강제로 무효화 영역이 발생했다고 알림
             break;
         case VK_DOWN:
-            objectPos.y += 10;
+            //objectPos.y += 10;
             InvalidateRect(hWnd, nullptr, true);   // 강제로 무효화 영역이 발생했다고 알림
             break;
         case VK_LEFT:
-            objectPos.x -= 10;
+            //objectPos.x -= 10;
             InvalidateRect(hWnd, nullptr, true);   // 강제로 무효화 영역이 발생했다고 알림
             break;
         case VK_RIGHT:
-            objectPos.x += 10;
+            //objectPos.x += 10;
             InvalidateRect(hWnd, nullptr, true);   // 강제로 무효화 영역이 발생했다고 알림
             break;
         case 'W':
@@ -228,8 +257,39 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_LBUTTONDOWN:
     {
-        mousePoint.x = LOWORD(lParam);
-        mousePoint.y = HIWORD(lParam);
+        lBtnDown = true;
+        LeftTop.x = LOWORD(lParam);
+        LeftTop.y = HIWORD(lParam);
+    }
+        break;
+    case WM_MOUSEMOVE:
+    {
+        if (lBtnDown)
+        {
+            RightBottom.x = LOWORD(lParam);
+            RightBottom.y = HIWORD(lParam);
+        }
+        InvalidateRect(hWnd, nullptr, true);   // 강제로 무효화 영역이 발생했다고 알림
+    }
+        break;
+    case WM_LBUTTONUP:
+    {
+        ObjInfo info = {};
+        info.objectPos.x = (LeftTop.x + RightBottom.x) / 2;
+        info.objectPos.y = (LeftTop.y + RightBottom.y) / 2;
+
+        info.objectScale.x = abs(LeftTop.x - RightBottom.x);
+        info.objectScale.y = abs(LeftTop.y - RightBottom.y);
+
+        vecInfo.push_back(info);
+
+        lBtnDown = false;
+        InvalidateRect(hWnd, nullptr, true);   // 강제로 무효화 영역이 발생했다고 알림
+    }
+        break;
+    case WM_TIMER:
+    {
+        InvalidateRect(hWnd, nullptr, true);
     }
         break;
     case WM_DESTROY:
