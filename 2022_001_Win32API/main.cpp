@@ -74,13 +74,41 @@ int APIENTRY wWinMain(_In_      HINSTANCE hInstance,     // 프로세스가 시�
     *     msg.message == WM_QUIT 을 받을때 false를 반환하여 프로그램을 종료시킨다. )
     */
     // 발생한 Message Queue에서 Message를 꺼내 본인 Message Queue에 저장한다.
-    while (GetMessage(&msg, nullptr, 0, 0))
+    // while (GetMessage(&msg, nullptr, 0, 0))
+    // {
+    //      // 단축키가 눌렸는지에 대한 정보를 TranslateAccelerator()로 확인한다.
+    //      if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+    //      {
+    //          TranslateMessage(&msg); // 메시지를 해석한 후
+    //          DispatchMessage(&msg);  // 해당 윈도우의 처리기에 메시지를 전달한다.
+    //      }
+    // }
+
+    // Peek 메시지 루프
+    /*
+    *   Peek : (재빨리) 훔쳐보다.
+    *   메시지 유무와 관계없이 항상 반환.
+    *   메시지큐에서 메시지를 확인한 경우 true, 메시지큐에 메시지가 없는 경우 false를 반환한다.
+    */
+    while (true)
     {
-        // 단축키가 눌렸는지에 대한 정보를 TranslateAccelerator()로 확인한다.
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
-            TranslateMessage(&msg); // 메시지를 해석한 후
-            DispatchMessage(&msg);  // 해당 윈도우의 처리기에 메시지를 전달한다.
+            if (WM_QUIT == msg.message)
+                break;
+
+            // 단축키가 눌렸는지에 대한 정보를 TranslateAccelerator()로 확인한다.
+            if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+            {
+                TranslateMessage(&msg); // 메시지를 해석한 후
+                DispatchMessage(&msg);  // 해당 윈도우의 처리기에 메시지를 전달한다.
+            }
+        }
+        // 메시지가 발생하지 않는 대부분의 시간
+        else
+        {
+            // Game 코드 수행
+
         }
     }
 
