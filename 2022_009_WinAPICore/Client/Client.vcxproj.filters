@@ -23,6 +23,9 @@
     <Filter Include="Engine\03. Manager\KeyMgr">
       <UniqueIdentifier>{2d54e5c8-d824-403b-ab8b-21959e1fa869}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\04. Object">
+      <UniqueIdentifier>{07758ed7-33ac-4678-bbb4-9a47e2fcd323}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -47,6 +50,9 @@
       <Filter>Engine\03. Manager\KeyMgr</Filter>
     </ClInclude>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="CObject.h">
+      <Filter>Engine\04. Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -69,5 +75,8 @@
       <Filter>Engine\03. Manager\KeyMgr</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="CObject.cpp">
+      <Filter>Engine\04. Object</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
