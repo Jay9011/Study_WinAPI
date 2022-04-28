@@ -16,5 +16,9 @@ public:
 	int init(HWND _hWnd, POINT _ptResolution);
 	void progress();
 
+private:
+	void update();
+	void render();
+
 };
 
