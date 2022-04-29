@@ -28,8 +28,8 @@ int Core::init(HWND _hWnd, POINT _ptResolution)
 
 	m_hdc = GetDC(m_hWnd);
 
-	g_obj.m_ptPos = POINT{ m_ptResolution.x / 2, m_ptResolution.y / 2 };
-	g_obj.m_ptScale = POINT{ 100, 100 };
+	g_obj.SetPos(Vec2(m_ptResolution.x / 2.f, m_ptResolution.y / 2.f));
+	g_obj.SetScale(Vec2(100, 100));
 
 	return S_OK;
 }
@@ -42,23 +42,28 @@ void Core::progress()
 
 void Core::update()
 {
+	Vec2 vPos = g_obj.GetPos();
 	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 	{
-		g_obj.m_ptPos.x -= 1;
+		vPos.x -= .1;
 	}
 
 	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 	{
-		g_obj.m_ptPos.x += 1;
+		vPos.x += .1;
 	}
+
+	g_obj.SetPos(vPos);
 }
 
 void Core::render()
 {
 	// ±×¸®±â
+	Vec2 vPos = g_obj.GetPos();
+	Vec2 vScale = g_obj.GetScale();
 	Rectangle(m_hdc
-		, g_obj.m_ptPos.x - g_obj.m_ptScale.x / 2
-		, g_obj.m_ptPos.y - g_obj.m_ptScale.y / 2
-		, g_obj.m_ptPos.x + g_obj.m_ptScale.x / 2
-		, g_obj.m_ptPos.y + g_obj.m_ptScale.y / 2);
+		, vPos.x - vScale.x / 2.f
+		, vPos.y - vScale.y / 2.f
+		, vPos.x + vScale.x / 2.f
+		, vPos.y + vScale.y / 2.f);
 }
