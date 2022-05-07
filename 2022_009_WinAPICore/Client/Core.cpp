@@ -10,12 +10,16 @@ Core::Core()
 	: m_hWnd(0)
 	, m_ptResolution{}
 	, m_hdc(0)
+	, m_hBit(0)
+	, m_memDC(0)
 {
 }
 
 Core::~Core()
 {
 	ReleaseDC(m_hWnd, m_hdc);
+	DeleteDC(m_memDC);
+	DeleteObject(m_hBit);
 }
 
 int Core::init(HWND _hWnd, POINT _ptResolution)
@@ -29,6 +33,13 @@ int Core::init(HWND _hWnd, POINT _ptResolution)
 	SetWindowPos(m_hWnd, nullptr, 100, 100, rt.right - rt.left, rt.bottom - rt.top, 0);
 
 	m_hdc = GetDC(m_hWnd);
+
+	// 이중 버퍼링 용도의 비트맵과 DC를 만든다.
+	m_hBit = CreateCompatibleBitmap(m_hdc, m_ptResolution.x, m_ptResolution.y);
+	m_memDC = CreateCompatibleDC(m_hdc);
+
+	HBITMAP hOldBit = (HBITMAP)SelectObject(m_memDC, m_hBit);
+	DeleteObject(hOldBit);	// memDC가 가지고 있던 1pixel짜리 더미 Bitmap을 삭제
 
 	// Manager 초기화
 	CTimeMgr::GetInst()->init();
@@ -68,12 +79,22 @@ void Core::update()
 
 void Core::render()
 {
+	// 화면 Clear
+	Rectangle(m_memDC, -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);
+
 	// 그리기
 	Vec2 vPos = g_obj.GetPos();
 	Vec2 vScale = g_obj.GetScale();
-	Rectangle(m_hdc
+	Rectangle(m_memDC
 		, vPos.x - vScale.x / 2.f
 		, vPos.y - vScale.y / 2.f
 		, vPos.x + vScale.x / 2.f
 		, vPos.y + vScale.y / 2.f);
+
+	BitBlt(m_hdc
+		, 0, 0, m_ptResolution.x, m_ptResolution.y
+		, m_memDC
+		, 0, 0
+		, SRCCOPY
+		);
 }
