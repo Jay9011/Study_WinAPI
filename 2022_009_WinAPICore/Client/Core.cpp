@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Core.h"
+#include "CTimeMgr.h"
+#include "CKeyMgr.h"
 #include "CObject.h"
 
 CObject g_obj;
@@ -28,6 +30,11 @@ int Core::init(HWND _hWnd, POINT _ptResolution)
 
 	m_hdc = GetDC(m_hWnd);
 
+	// Manager 초기화
+	CTimeMgr::GetInst()->init();
+	CKeyMgr::GetInst()->init();
+	
+
 	g_obj.SetPos(Vec2(m_ptResolution.x / 2.f, m_ptResolution.y / 2.f));
 	g_obj.SetScale(Vec2(100, 100));
 
@@ -36,6 +43,9 @@ int Core::init(HWND _hWnd, POINT _ptResolution)
 
 void Core::progress()
 {
+	// Manager Update
+	CTimeMgr::GetInst()->update();
+
 	update();	// 변경점 적용
 	render();	// 그리기
 }
@@ -45,12 +55,12 @@ void Core::update()
 	Vec2 vPos = g_obj.GetPos();
 	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 	{
-		vPos.x -= .1;
+		vPos.x -= 200.f * CTimeMgr::GetInst()->GetfDT();
 	}
 
 	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 	{
-		vPos.x += .1;
+		vPos.x += 200.f * CTimeMgr::GetInst()->GetfDT();
 	}
 
 	g_obj.SetPos(vPos);

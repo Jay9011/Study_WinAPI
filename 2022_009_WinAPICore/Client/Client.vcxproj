@@ -144,9 +144,10 @@
     <ClInclude Include="Client.h" />
     <ClInclude Include="CObject.h" />
     <ClInclude Include="Core.h" />
+    <ClInclude Include="CTimeMgr.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="KeyMgr.h" />
+    <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="struct.h" />
@@ -154,7 +155,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CObject.cpp" />
-    <ClCompile Include="KeyMgr.cpp" />
+    <ClCompile Include="CTimeMgr.cpp" />
+    <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Core.cpp" />
   </ItemGroup>
