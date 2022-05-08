@@ -56,6 +56,7 @@ void Core::progress()
 {
 	// Manager Update
 	CTimeMgr::GetInst()->update();
+	CKeyMgr::GetInst()->update();
 
 	update();	// 변경점 적용
 	render();	// 그리기
@@ -64,12 +65,12 @@ void Core::progress()
 void Core::update()
 {
 	Vec2 vPos = g_obj.GetPos();
-	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+	if (CKeyMgr::GetInst()->GetKeyState(KEY::LEFT) == KEY_STATE::HOLD)
 	{
 		vPos.x -= 200.f * CTimeMgr::GetInst()->GetfDT();
 	}
 
-	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+	if (CKeyMgr::GetInst()->GetKeyState(KEY::RIGHT) == KEY_STATE::HOLD)
 	{
 		vPos.x += 200.f * CTimeMgr::GetInst()->GetfDT();
 	}
