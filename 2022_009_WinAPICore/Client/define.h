@@ -22,6 +22,9 @@
 #define KEY_AWAY(key)			KEY_CHECK(key, KEY_STATE::AWAY)
 #define KEY_NONE(key)			KEY_CHECK(key, KEY_STATE::NONE)
 
+// Math
+constexpr float PI = 3.1415926536f;
+
 // Type Definition
 enum class GROUP_TYPE
 {

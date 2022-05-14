@@ -4,7 +4,7 @@
 #include "CTimeMgr.h"
 
 CMissile::CMissile()
-	: m_fDir(1)
+	: m_fTheta(PI / 2.f)
 {
 }
 
@@ -13,7 +13,9 @@ CMissile::~CMissile() = default;
 void CMissile::update()
 {
 	Vec2 vPos = GetPos();
-	vPos.y += fDT * 600.f * m_fDir;
+
+	vPos.x += 600.f * cosf(m_fTheta) * fDT;
+	vPos.y -= 600.f * sinf(m_fTheta) * fDT;
 
 	SetPos(vPos);
 }
