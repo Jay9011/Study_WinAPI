@@ -5,12 +5,8 @@ class CScene_Start :
 {
 public:
     CScene_Start();
-    ~CScene_Start();
+    ~CScene_Start() override;
 
-private:
-
-
-public:
     virtual void Enter() override;
     virtual void Exit()  override;
 

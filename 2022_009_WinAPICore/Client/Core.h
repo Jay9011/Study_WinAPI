@@ -15,7 +15,7 @@ public:
 	int init(HWND _hWnd, POINT _ptResolution);
 	void progress();
 
-public:
-	HWND GetMainHWnd() { return m_hWnd; }
+	HWND  GetMainHWnd()		const { return m_hWnd; }
+	POINT GetResolution()	const { return m_ptResolution; }
 };
 
