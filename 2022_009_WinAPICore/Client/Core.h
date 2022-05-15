@@ -16,6 +16,7 @@ public:
 	void progress();
 
 	HWND  GetMainHWnd()		const { return m_hWnd; }
+	HDC	  GetMainDC()		const { return m_hdc; }
 	POINT GetResolution()	const { return m_ptResolution; }
 };
 

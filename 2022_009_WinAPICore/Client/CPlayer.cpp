@@ -17,7 +17,7 @@ CPlayer::CPlayer()
 	m_pTex = new CTexture;
 
 	wstring strFilePath = CPathMgr::GetInst()->GetContentPath();
-	strFilePath += L"texture\\Plaer.bmp\0";
+	strFilePath += L"texture\\Player.bmp\0";
 	m_pTex->Load(strFilePath);
 }
 
@@ -60,10 +60,19 @@ void CPlayer::update()
 
 void CPlayer::render(HDC _dc)
 {
-	m_pTex->Width();
-	m_pTex->Height();
+	int iWidth  = (int)m_pTex->Width();
+	int iHeight = (int)m_pTex->Height();
 
-	BitBlt(_dc, )
+	Vec2 vPos = GetPos();
+
+	BitBlt(_dc
+		,  int(vPos.x - (float)(iWidth / 2.0))
+		,  int(vPos.y - (float)(iHeight / 2.0))
+		,  iWidth, iHeight
+		,  m_pTex->GetDC()
+		,  0, 0
+		,  SRCCOPY
+	);
 }
 
 void CPlayer::CreateMissile()
