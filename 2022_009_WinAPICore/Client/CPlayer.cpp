@@ -65,13 +65,14 @@ void CPlayer::render(HDC _dc)
 
 	Vec2 vPos = GetPos();
 
-	BitBlt(_dc
-		,  int(vPos.x - (float)(iWidth / 2.0))
-		,  int(vPos.y - (float)(iHeight / 2.0))
-		,  iWidth, iHeight
-		,  m_pTex->GetDC()
-		,  0, 0
-		,  SRCCOPY
+	TransparentBlt(_dc
+		, int(vPos.x - (float)(iWidth / 2.0))
+		, int(vPos.y - (float)(iHeight / 2.0))
+		, iWidth, iHeight
+		, m_pTex->GetDC()
+		, 0, 0
+		, iWidth, iHeight
+		, RGB(255, 0, 255)
 	);
 }
 
@@ -84,7 +85,7 @@ void CPlayer::CreateMissile()
 	CMissile* pMissile = new CMissile;
 	pMissile->SetPos(vMissilePos);
 	pMissile->SetScale(Vec2(25.f, 25.f));
-	pMissile->SetDir(Vec2(1.f, -7.f));
+	pMissile->SetDir(Vec2(0.f, -1.f));
 
 	CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
 	pCurScene->AddObject(pMissile, GROUP_TYPE::DEFAULT);

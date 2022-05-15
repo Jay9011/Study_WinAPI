@@ -3,7 +3,6 @@
 // 미리 컴파일된 헤더
 #include <Windows.h>
 #include <iostream>
-#include <cassert>
 
 #include <vector>
 using	std::vector;
@@ -11,6 +10,13 @@ using	std::vector;
 #include <string>
 using std::string;
 using std::wstring;
+
+#include <math.h>
+#include <cassert>
+
+
+#pragma comment(lib, "Msimg32.lib")
+
 
 #include "define.h"
 #include "struct.h"
