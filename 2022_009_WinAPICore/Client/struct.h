@@ -2,10 +2,10 @@
 
 struct Vec2
 {
+public:
 	float x;
 	float y;
 
-public:
 	Vec2()
 		: x(0.f)
 		, y(0.f)
@@ -30,5 +30,23 @@ public:
 	{
 		x = (float)_pt.x;
 		y = (float)_pt.y;
+	}
+
+	Vec2& Normalize()
+	{
+		float fLen = Length();
+
+		if (fLen != 0)
+		{
+			x /= fLen;
+			y /= fLen;
+		}
+
+		return *this;
+	}
+
+	float Length()
+	{
+		return sqrt(pow(x, 2) + pow(y, 2));
 	}
 };

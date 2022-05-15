@@ -11,10 +11,11 @@ public:
     void update() override;
     void render(HDC _dc) override;
 
-    void SetDir(float _fTheta) { m_fTheta = _fTheta; }
+    void SetDir(float _fTheta)  { m_fTheta = _fTheta; }
+    void SetDir(Vec2 _vDir)     { m_vDir = _vDir; m_vDir.Normalize(); }
 
 private:
-    float m_fTheta; // 이동방향 세타
-
+    float   m_fTheta;   // 이동방향 세타
+    Vec2    m_vDir;     // 이동방향 벡터
 };
 

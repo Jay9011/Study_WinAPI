@@ -5,7 +5,9 @@
 
 CMissile::CMissile()
 	: m_fTheta(PI / 2.f)
+	, m_vDir(Vec2(0.f, 1.f))
 {
+	m_vDir.Normalize();
 }
 
 CMissile::~CMissile() = default;
@@ -14,8 +16,8 @@ void CMissile::update()
 {
 	Vec2 vPos = GetPos();
 
-	vPos.x += 600.f * cosf(m_fTheta) * fDT;
-	vPos.y -= 600.f * sinf(m_fTheta) * fDT;
+	vPos.x += 600.f * m_vDir.x * fDT;
+	vPos.y += 600.f * m_vDir.y * fDT;
 
 	SetPos(vPos);
 }
