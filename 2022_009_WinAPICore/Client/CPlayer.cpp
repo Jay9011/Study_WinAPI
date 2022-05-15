@@ -7,6 +7,26 @@
 #include "CTimeMgr.h"
 
 #include "CMissile.h"
+#include "CPathMgr.h"
+#include "CTexture.h"
+
+CPlayer::CPlayer()
+	: m_pTex(nullptr)
+{
+	// Texture 로딩하기
+	m_pTex = new CTexture;
+
+	wstring strFilePath = CPathMgr::GetInst()->GetContentPath();
+	strFilePath += L"texture\\Plaer.bmp\0";
+	m_pTex->Load(strFilePath);
+}
+
+CPlayer::~CPlayer()
+{
+	if (nullptr != m_pTex)
+		delete m_pTex;
+	
+}
 
 void CPlayer::update()
 {
@@ -36,6 +56,14 @@ void CPlayer::update()
 	}
 
 	SetPos(vPos);
+}
+
+void CPlayer::render(HDC _dc)
+{
+	m_pTex->Width();
+	m_pTex->Height();
+
+	BitBlt(_dc, )
 }
 
 void CPlayer::CreateMissile()

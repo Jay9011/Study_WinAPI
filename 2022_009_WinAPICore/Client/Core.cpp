@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "Core.h"
+
 #include "CTimeMgr.h"
 #include "CKeyMgr.h"
 #include "CSceneMgr.h"
-#include "CObject.h"
+#include "CPathMgr.h"
 
 Core::Core()
 	: m_hWnd(0)
@@ -41,6 +42,7 @@ int Core::init(HWND _hWnd, POINT _ptResolution)
 	DeleteObject(hOldBit);	// memDC가 가지고 있던 1pixel짜리 더미 Bitmap을 삭제
 
 	// Manager 초기화
+	CPathMgr::GetInst()->init();
 	CTimeMgr::GetInst()->init();
 	CKeyMgr::GetInst()->init();
 	CSceneMgr::GetInst()->init();
@@ -69,4 +71,6 @@ void Core::progress()
 		, 0, 0
 		, SRCCOPY
 	);
+
+	CTimeMgr::GetInst()->render();
 }

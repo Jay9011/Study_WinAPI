@@ -1,11 +1,15 @@
 #include "pch.h"
 #include "CScene_Start.h"
 
-#include "Core.h"
-
 #include "CObject.h"
+
 #include "CPlayer.h"
 #include "CMonster.h"
+
+#include "Core.h"
+
+#include "CPathMgr.h"
+#include "CTexture.h"
 
 CScene_Start::CScene_Start() = default;
 
@@ -14,6 +18,7 @@ CScene_Start::~CScene_Start() = default;
 void CScene_Start::Enter()
 {
 	// Scene 입장
+	
 	
 	// Player 추가
 	CObject* pObj = new CPlayer;
