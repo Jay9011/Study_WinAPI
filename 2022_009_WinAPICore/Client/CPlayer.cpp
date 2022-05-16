@@ -7,25 +7,19 @@
 #include "CTimeMgr.h"
 
 #include "CMissile.h"
-#include "CPathMgr.h"
+
+#include "CResMgr.h"
 #include "CTexture.h"
 
 CPlayer::CPlayer()
 	: m_pTex(nullptr)
 {
 	// Texture 로딩하기
-	m_pTex = new CTexture;
-
-	wstring strFilePath = CPathMgr::GetInst()->GetContentPath();
-	strFilePath += L"texture\\Player.bmp\0";
-	m_pTex->Load(strFilePath);
+	m_pTex = CResMgr::GetInst()->LoadTexture(L"PlayerTex", L"texture\\Player.bmp");
 }
 
 CPlayer::~CPlayer()
 {
-	if (nullptr != m_pTex)
-		delete m_pTex;
-	
 }
 
 void CPlayer::update()

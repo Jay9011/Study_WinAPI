@@ -5,7 +5,10 @@
 #include <iostream>
 
 #include <vector>
+#include <map>
 using	std::vector;
+using	std::map;
+using	std::make_pair;
 
 #include <string>
 using std::string;
