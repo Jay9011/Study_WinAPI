@@ -65,6 +65,9 @@
     <Filter Include="Engine\03. Manager\ResMgr">
       <UniqueIdentifier>{2bc98c8f-ccca-4668-87e0-1dd1295f008c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\07. Component">
+      <UniqueIdentifier>{0535744b-4991-4674-9df7-cb7ce713fd53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -131,6 +134,9 @@
     <ClInclude Include="CResMgr.h">
       <Filter>Engine\03. Manager\ResMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CCollider.h">
+      <Filter>Engine\07. Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -191,6 +197,9 @@
     </ClCompile>
     <ClCompile Include="CResMgr.cpp">
       <Filter>Engine\03. Manager\ResMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollider.cpp">
+      <Filter>Engine\07. Component</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
