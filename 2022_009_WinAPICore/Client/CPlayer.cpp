@@ -70,6 +70,9 @@ void CPlayer::render(HDC _dc)
 		, iWidth, iHeight
 		, RGB(255, 0, 255)
 	);
+
+	// 컴포넌트(충돌체, etc...) 가 있는 경우 렌더
+	component_render(_dc);
 }
 
 void CPlayer::CreateMissile()
