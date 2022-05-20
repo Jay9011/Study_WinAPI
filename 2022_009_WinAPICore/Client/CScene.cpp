@@ -28,8 +28,6 @@ void CScene::update()
 			m_arrObj[i][j]->update();
 		}
 	}
-
-	finalupdate();
 }
 
 void CScene::finalupdate()

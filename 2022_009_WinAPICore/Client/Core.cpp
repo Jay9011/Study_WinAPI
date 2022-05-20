@@ -5,6 +5,7 @@
 #include "CKeyMgr.h"
 #include "CSceneMgr.h"
 #include "CPathMgr.h"
+#include "CCollisionMgr.h"
 
 Core::Core()
 	: m_hWnd(0)
@@ -65,7 +66,9 @@ void Core::progress()
 	// Manager Update
 	CTimeMgr::GetInst()->update();
 	CKeyMgr::GetInst()->update();
+	
 	CSceneMgr::GetInst()->update();
+	CCollisionMgr::GetInst()->update();
 
 	// === === ===
 	//  Rendering
