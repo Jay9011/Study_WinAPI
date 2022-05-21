@@ -1,0 +1,12 @@
+{
+  "ExtractionTool": 0,
+  "AutomaticExtraction": false,
+  "CMakeCommandsFile": "",
+  "AdditionalPreprocessorDefinitions": "",
+  "AdditionalIncludeDirs": "",
+  "AdditionalForceIncludes": "",
+  "AdditionalCommandLine": "",
+  "EnableWarnings": false,
+  "PDBLocation": "",
+  "ParserOutputFolder": ""
+}

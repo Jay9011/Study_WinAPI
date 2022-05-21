@@ -6,6 +6,7 @@ class CCollider
 {
 public:
 	CCollider();
+	CCollider(const CCollider& _origin);
 	~CCollider();
 
 private:
@@ -28,6 +29,11 @@ public:
 	void SetScale(Vec2 _vScale)		{ m_vScale = _vScale; }
 	Vec2 GetOffsetPos() const { return m_vOffsetPos; }
 	Vec2 GetScale()		const { return m_vScale; }
+
+	/*
+	*  Operator
+	*/
+	CCollider& operator = (CCollider& _origin) = delete;
 
 	friend class CObject;
 };

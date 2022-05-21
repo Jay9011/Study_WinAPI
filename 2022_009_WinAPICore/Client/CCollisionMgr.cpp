@@ -7,8 +7,8 @@
 #include "CCollider.h"
 
 CCollisionMgr::CCollisionMgr()
+	: m_arrCheck{}
 {
-	
 }
 
 CCollisionMgr::~CCollisionMgr() = default;
