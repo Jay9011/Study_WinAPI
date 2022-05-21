@@ -27,6 +27,9 @@ void CCollisionMgr::update()
 	}
 }
 
+/*
+	이전프레임 충돌 정보를 검사하고 저장한다.
+*/
 void CCollisionMgr::CollisionGroupUpdate(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)
 {
 	CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
@@ -37,6 +40,7 @@ void CCollisionMgr::CollisionGroupUpdate(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)
 	// 리턴 받은 형식인 vector<CObject*>&로 받아야 한다.
 	const vector<CObject*>& vecLeft  = pCurScene->GetGroupObject(_eLeft);
 	const vector<CObject*>& vecRight = pCurScene->GetGroupObject(_eRight);
+	map<ULONGLONG, bool>::iterator iter;
 
 	for (size_t i = 0; i < vecLeft.size(); i++)
 	{
@@ -51,14 +55,50 @@ void CCollisionMgr::CollisionGroupUpdate(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)
 				|| vecLeft[i] == vecRight[j])
 				continue;
 
+			CCollider* pLeftCol = vecLeft[i]->GetCollider();
+			CCollider* pRightCol = vecRight[j]->GetCollider();
+
+			// UNION으로 고유 충돌 ID를 만든다.
+			COLLIDER_ID ID;
+			ID.Left_id = pLeftCol->GetID();
+			ID.Right_id = pRightCol->GetID();
+
+			iter = m_mapColInfo.find(ID.ID);// map<>에 저장된 이전 충돌 정보를 검색해본다.
+
+			if (m_mapColInfo.end() == iter) // 충돌 여부가 처음 검사되는 경우 등록
+			{
+				m_mapColInfo.insert(make_pair(ID.ID, false));
+				iter = m_mapColInfo.find(ID.ID);
+			}
+
 			// 두 Object 모두 충돌체가 있는 경우 충돌 검사
-			if (IsCollision(vecLeft[i]->GetCollider(), vecRight[j]->GetCollider()))
+			if (IsCollision(pLeftCol, pRightCol))
 			{
 				// 충돌 됨
+				if (iter->second)
+				{
+					// 이전에도 충돌하고 있었다.
+					pLeftCol->OnCollision(pRightCol);
+					pRightCol->OnCollision(pLeftCol);
+				}
+				else
+				{
+					// 이전에는 충돌되지 않았다.
+					pLeftCol->OnCollisionEnter(pRightCol);
+					pRightCol->OnCollisionEnter(pLeftCol);
+					iter->second = true;
+				}
 			}
 			else
 			{
 				// 충돌 안됨
+				if (iter->second)
+				{
+					// 이전에는 충돌했었다.
+					pLeftCol->OnCollisionExit(pRightCol);
+					pRightCol->OnCollisionExit(pLeftCol);
+					iter->second = false;
+				}
 			}
 		}
 	}
@@ -66,6 +106,17 @@ void CCollisionMgr::CollisionGroupUpdate(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)
 
 bool CCollisionMgr::IsCollision(CCollider* _pLeftCol, CCollider* _pRightCol)
 {
+	Vec2 vLeftPos   = _pLeftCol->GetFinalPos();
+	Vec2 vLeftScale = _pLeftCol->GetScale();
+
+	Vec2 vRightPos   = _pRightCol->GetFinalPos();
+	Vec2 vRightScale = _pRightCol->GetScale();
+
+	if (   abs(vRightPos.x - vLeftPos.x) < (vLeftScale.x + vRightScale.x) / 2.f
+		&& abs(vRightPos.y - vLeftPos.y) < (vLeftScale.y + vRightScale.y) / 2.f)
+	{
+		return true;
+	}
 
 	return false;
 }

@@ -20,15 +20,24 @@ private:
 	Vec2 m_vScale;		// 충돌체의 크기
 
 	UINT m_iID;			// 충돌체 고유한 ID 값
+	UINT m_iCol;
 
 public:
 	void finalupdate();
 	void render(HDC _dc);
 
+	// 충돌 시점 함수
+	void OnCollision(CCollider* _pOther);		// 충돌 중인 경우 호출되는 함수
+	void OnCollisionEnter(CCollider* _pOther);	// 충돌이 시작된 경우
+	void OnCollisionExit(CCollider* _pOther);	// 충돌을 벗어난 경우
+
+	Vec2 GetFinalPos()		  const { return m_vFinalPos; }
+	Vec2 GetOffsetPos()		  const { return m_vOffsetPos; }
 	void SetOffsetPos(Vec2 _vPos)	{ m_vOffsetPos = _vPos; }
+	Vec2 GetScale()			  const { return m_vScale; }
 	void SetScale(Vec2 _vScale)		{ m_vScale = _vScale; }
-	Vec2 GetOffsetPos() const { return m_vOffsetPos; }
-	Vec2 GetScale()		const { return m_vScale; }
+
+	UINT GetID() { return m_iID; }
 
 	/*
 	*  Operator
