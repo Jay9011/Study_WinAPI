@@ -33,7 +33,7 @@ enum class GROUP_TYPE
 	MISSILE,
 	MONSTER,
 
-	END = 32,
+	END = 32
 };
 
 enum class SCENE_TYPE
@@ -43,14 +43,14 @@ enum class SCENE_TYPE
 	STAGE_01,
 	STAGE_02,
 
-	END,
+	END
 };
 
 enum class BRUSH_TYPE
 {
 	HOLLOW,
 	
-	END,
+	END
 };
 
 enum class PEN_TYPE
@@ -58,5 +58,13 @@ enum class PEN_TYPE
 	RED,
 	GREEN,
 	BLUE,
-	END,
+	END
+};
+
+enum class EVENT_TYPE
+{
+	CREATE_OBJECT,
+	DELETE_OBJECT,
+	SCENE_CHANGE,
+	END
 };

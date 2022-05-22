@@ -36,8 +36,9 @@ public:
 	void SetOffsetPos(Vec2 _vPos)	{ m_vOffsetPos = _vPos; }
 	Vec2 GetScale()			  const { return m_vScale; }
 	void SetScale(Vec2 _vScale)		{ m_vScale = _vScale; }
+	UINT GetID()			  const { return m_iID; }
+	CObject* GetObj()		  const { return m_pOwner; }
 
-	UINT GetID() { return m_iID; }
 
 	/*
 	*  Operator
