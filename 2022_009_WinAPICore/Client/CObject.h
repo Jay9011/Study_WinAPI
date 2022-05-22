@@ -14,17 +14,22 @@ public:
 
 	void component_render(HDC _dc);
 
+	void CreateCollider();
+
 	virtual void OnCollision(CCollider* _pOther) {}
 	virtual void OnCollisionEnter(CCollider* _pOther) {}
 	virtual void OnCollisionExit(CCollider* _pOther) {}
 
-	void SetPos  (Vec2 _vPos)   { m_vPos = _vPos; }
-	void SetScale(Vec2 _vScale) { m_vScale = _vScale; }
-	Vec2 GetPos()   const { return m_vPos; }
-	Vec2 GetScale() const { return m_vScale; }
+	void SetPos(Vec2 _vPos) { m_vPos = _vPos; }
+	Vec2 GetPos() const { return m_vPos; }
 
-	void CreateCollider();
-	CCollider* GetCollider() { return m_pCollider; }
+	void SetScale(Vec2 _vScale) { m_vScale = _vScale; }
+	Vec2 GetScale() const { return m_vScale; }
+	
+	void SetName(const wstring& _strName) { m_strName = _strName; }
+	const wstring& GetName() const { return m_strName; }
+
+	CCollider* GetCollider() const { return m_pCollider; }
 
 private:
 	wstring		m_strName;
