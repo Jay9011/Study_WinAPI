@@ -58,7 +58,7 @@ void CCollisionMgr::CollisionGroupUpdate(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)
 			CCollider* pLeftCol = vecLeft[i]->GetCollider();
 			CCollider* pRightCol = vecRight[j]->GetCollider();
 
-			// UNION으로 고유 충돌 ID를 만든다.
+			// UNION으로 고유 충돌 ID를 만든다. (두 충돌체 조합 ID)
 			COLLIDER_ID ID;
 			ID.Left_id = pLeftCol->GetID();
 			ID.Right_id = pRightCol->GetID();
@@ -78,15 +78,31 @@ void CCollisionMgr::CollisionGroupUpdate(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)
 				if (iter->second)
 				{
 					// 이전에도 충돌하고 있었다.
-					pLeftCol->OnCollision(pRightCol);
-					pRightCol->OnCollision(pLeftCol);
+
+					if (vecLeft[i]->IsDead() || vecRight[j]->IsDead())
+					{
+						// 두 충돌체 중 하나가 삭제 예정인 경우 (마지막 삭제 Event)
+						pLeftCol->OnCollisionExit(pRightCol);
+						pRightCol->OnCollisionExit(pLeftCol);
+						iter->second = false;
+					}
+					else
+					{
+						pLeftCol->OnCollision(pRightCol);
+						pRightCol->OnCollision(pLeftCol);
+					}
 				}
 				else
 				{
 					// 이전에는 충돌되지 않았다.
-					pLeftCol->OnCollisionEnter(pRightCol);
-					pRightCol->OnCollisionEnter(pLeftCol);
-					iter->second = true;
+					// 근데, 삭제될 때 하필 충돌되어 있는 상태라면, 이전에 Render가 안되어 있으므로 충돌 처리를 할 필요가 없다.
+					if (!vecLeft[i]->IsDead() && !vecRight[j]->IsDead())
+					{
+						pLeftCol->OnCollisionEnter(pRightCol);
+						pRightCol->OnCollisionEnter(pLeftCol);
+						iter->second = true;
+					}
+
 				}
 			}
 			else

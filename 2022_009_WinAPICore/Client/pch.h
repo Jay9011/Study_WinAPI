@@ -4,11 +4,13 @@
 #include <Windows.h>
 #include <iostream>
 
+#include <algorithm>
 #include <vector>
 #include <map>
 using	std::vector;
 using	std::map;
 using	std::make_pair;
+using	std::for_each;
 
 #include <string>
 using std::string;
@@ -23,3 +25,5 @@ using std::wstring;
 
 #include "define.h"
 #include "struct.h"
+#include "func.h"
+

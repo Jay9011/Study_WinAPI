@@ -38,6 +38,13 @@ void CTimeMgr::update()
 	
 	// 이전 카운트 값을 현재 카운트로 갱신 (다음번에 계산을 하기 위해)
 	m_liPrevCount = m_liCurCount;
+
+#ifdef _DEBUG
+	// DEBUG 일 때, DT값이 무한정 늘어나는 것을 방지해서 DT를 60frame으로 고정시켜준다.
+	if (m_dDT > (1. / 60.))
+		m_dDT = (1. / 60.);
+#endif // _DEBUG
+
 }
 
 void CTimeMgr::render()

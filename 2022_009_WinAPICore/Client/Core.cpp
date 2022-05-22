@@ -6,13 +6,14 @@
 #include "CSceneMgr.h"
 #include "CPathMgr.h"
 #include "CCollisionMgr.h"
+#include "CEventMgr.h"
 
 Core::Core()
-	: m_hWnd(0)
+	: m_hWnd(nullptr)
 	, m_ptResolution{}
-	, m_hdc(0)
-	, m_hBit(0)
-	, m_memDC(0)
+	, m_hdc(nullptr)
+	, m_hBit(nullptr)
+	, m_memDC(nullptr)
 	, m_arrBrush{}
 	, m_arrPen{}
 {
@@ -63,16 +64,23 @@ int Core::init(HWND _hWnd, POINT _ptResolution)
 
 void Core::progress()
 {
+	// === === === ===
 	// Manager Update
+	// === === === ===
 	CTimeMgr::GetInst()->update();
 	CKeyMgr::GetInst()->update();
 	
+	
+	// === === === ===
+	//  Scene Update
+	// === === === ===
 	CSceneMgr::GetInst()->update();
-	CCollisionMgr::GetInst()->update();
+	CCollisionMgr::GetInst()->update();	// 충돌 체크
 
-	// === === ===
-	//  Rendering
-	// === === ===
+
+	// === === === ===
+	//    Rendering
+	// === === === ===
 	// 화면 Clear
 	Rectangle(m_memDC, -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);
 
@@ -86,6 +94,12 @@ void Core::progress()
 	);
 
 	CTimeMgr::GetInst()->render();
+
+
+	// === === === ===
+	// 이벤트 지연처리
+	// === === === ===
+	CEventMgr::GetInst()->update();
 }
 
 void Core::CreateBrushPen()

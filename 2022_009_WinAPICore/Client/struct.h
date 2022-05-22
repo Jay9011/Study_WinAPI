@@ -68,6 +68,6 @@ public:
 
 	float Length()
 	{
-		return sqrt(pow(x, 2) + pow(y, 2));
+		return (float)sqrt(pow(x, 2) + pow(y, 2));
 	}
 };
