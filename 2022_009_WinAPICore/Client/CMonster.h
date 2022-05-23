@@ -6,6 +6,7 @@ class CMonster :
 public:
     CMonster();
     ~CMonster() override;
+    CLONE(CMonster)
 
     void update() override;
 
@@ -24,7 +25,6 @@ private:
     int     m_iDir;
 
     int     m_iHp;
-
-
+    
 };
 

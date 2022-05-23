@@ -7,14 +7,23 @@ CObject::CObject()
 	, m_vScale{}
 	, m_pCollider(nullptr)
 	, m_bAlive(true)
+{}
+
+CObject::CObject(const CObject& _origin)
+	: m_strName(_origin.m_strName)
+	, m_vPos(_origin.m_vPos)
+	, m_vScale(_origin.m_vScale)
+	, m_pCollider(nullptr)
+	, m_bAlive(true)
 {
+	m_pCollider = new CCollider(*_origin.m_pCollider);
+	m_pCollider->m_pOwner = this;
 }
 
 CObject::~CObject()
 {
 	if (nullptr != m_pCollider)
 		delete m_pCollider;
-
 }
 
 void CObject::finalupdate()

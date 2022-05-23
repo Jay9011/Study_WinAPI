@@ -7,6 +7,7 @@ class CMissile :
 public:
     CMissile();
     ~CMissile() override;
+    CLONE(CMissile)
 
     void update() override;
     void render(HDC _dc) override;
@@ -19,5 +20,6 @@ public:
 private:
     float   m_fTheta;   // 이동방향 세타
     Vec2    m_vDir;     // 이동방향 벡터
+    
 };
 

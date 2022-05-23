@@ -8,6 +8,7 @@ class CPlayer : public CObject
 public:
 	CPlayer();
 	~CPlayer() override;
+	CLONE(CPlayer)
 
 private:
 	CTexture* m_pTex;

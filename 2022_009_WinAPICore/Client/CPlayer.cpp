@@ -23,9 +23,7 @@ CPlayer::CPlayer()
 	GetCollider()->SetScale(Vec2(22.f, 15.f));
 }
 
-CPlayer::~CPlayer()
-{
-}
+CPlayer::~CPlayer() = default;
 
 void CPlayer::update()
 {
