@@ -15,5 +15,9 @@ public:
 	void render(HDC _dc);
 
 	CScene* GetCurScene() { return m_pCurScene; }
+
+private:
+	void ChangeScene(SCENE_TYPE _eNext);
+	friend class CEventMgr;
 };
 

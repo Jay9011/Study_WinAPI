@@ -7,8 +7,9 @@ public:
     CScene_Start();
     ~CScene_Start() override;
 
-    virtual void Enter() override;
-    virtual void Exit()  override;
+    void update() override;
+    void Enter() override;
+    void Exit()  override;
 
 };
 

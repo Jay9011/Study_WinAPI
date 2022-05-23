@@ -93,7 +93,7 @@ void Core::progress()
 		, SRCCOPY
 	);
 
-	CTimeMgr::GetInst()->render();
+	CTimeMgr::GetInst()->render();	// 원도우 창에 FPS와 DT 표시
 
 
 	// === === === ===
