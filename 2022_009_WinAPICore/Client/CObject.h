@@ -15,9 +15,14 @@ private:
 	Vec2		m_vPos;
 	Vec2		m_vScale;
 
-	CCollider* m_pCollider;
-
 	bool		m_bAlive;	// 삭제예정 flag
+
+	/* === === === === === === === === === ===
+			컴포넌트
+	=== === === === === === === === === === */
+	CCollider* m_pCollider;
+	CAnimator* m_pAnimator;
+
 
 public:
 	virtual void update() = 0;
