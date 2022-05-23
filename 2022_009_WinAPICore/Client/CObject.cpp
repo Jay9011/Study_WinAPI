@@ -30,6 +30,9 @@ CObject::~CObject()
 {
 	if (nullptr != m_pCollider)
 		delete m_pCollider;
+
+	if (nullptr != m_pAnimator)
+		delete m_pAnimator;
 }
 
 void CObject::finalupdate()
