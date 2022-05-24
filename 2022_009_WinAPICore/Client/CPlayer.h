@@ -10,9 +10,6 @@ public:
 	~CPlayer() override;
 	CLONE(CPlayer)
 
-private:
-	CTexture* m_pTex;
-
 public:
 	void update() override;
 	void render(HDC _dc) override;

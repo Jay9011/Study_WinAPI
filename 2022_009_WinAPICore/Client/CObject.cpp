@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CObject.h"
 #include "CCollider.h"
+#include "CAnimator.h"
 
 CObject::CObject()
 	: m_vPos{}
@@ -18,10 +19,20 @@ CObject::CObject(const CObject& _origin)
 	, m_pCollider(nullptr)
 	, m_pAnimator(nullptr)
 {
+	/* === === === === === === === === ===
+			Component 복사
+	=== === === === === === === === === === */
+	// Collider 복사
 	if (_origin.m_pCollider)
 	{
 		m_pCollider = new CCollider(*_origin.m_pCollider);
 		m_pCollider->m_pOwner = this;
+	}
+	// Animator 복사
+	if (_origin.m_pAnimator)
+	{
+		m_pAnimator = new CAnimator(*_origin.m_pAnimator);
+		m_pAnimator->m_pOwner = this;
 	}
 
 }
@@ -54,6 +65,11 @@ void CObject::render(HDC _dc)
 
 void CObject::component_render(HDC _dc)
 {
+	if (nullptr != m_pAnimator)
+	{
+		m_pAnimator->render(_dc);
+	}
+
 	if (nullptr != m_pCollider)
 	{
 		m_pCollider->render(_dc);
@@ -64,4 +80,10 @@ void CObject::CreateCollider()
 {
 	m_pCollider = new CCollider;
 	m_pCollider->m_pOwner = this;
+}
+
+void CObject::CreateAnimator()
+{
+	m_pAnimator = new CAnimator;
+	m_pAnimator->m_pOwner = this;
 }

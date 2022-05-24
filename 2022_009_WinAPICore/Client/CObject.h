@@ -38,10 +38,16 @@ public:
 			Collider 관련
 	=== === === === === === === === === === */
 	void CreateCollider();
+	CCollider* GetCollider() const { return m_pCollider; }
 	virtual void OnCollision(CCollider* _pOther) {}
 	virtual void OnCollisionEnter(CCollider* _pOther) {}
 	virtual void OnCollisionExit(CCollider* _pOther) {}
-	CCollider* GetCollider() const { return m_pCollider; }
+
+	/* === === === === === === === === ===
+			Animator 관련
+	=== === === === === === === === === === */
+	void CreateAnimator();
+	CAnimator* GetAnimator() { return m_pAnimator; }
 
 	/* === === === === === === === === ===
 			Get / Set
