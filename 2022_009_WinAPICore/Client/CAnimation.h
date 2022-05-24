@@ -5,9 +5,10 @@ class CTexture;
 
 struct tAnimFrm
 {
-	Vec2  vLT;			// 시작 좌측 상단 좌표
-	Vec2  vSlice;		// 한 프레임의 이미지 크기
-	float fDuration;	// 유지시간
+	Vec2	vLT;		// 시작 좌측 상단 좌표
+	Vec2	vSlice;		// 한 프레임의 이미지 크기
+	float	fDuration;	// 유지시간
+	Vec2	vOffSet;
 };
 
 class CAnimation
@@ -30,12 +31,15 @@ public:
 
 	const wstring& GetName() const { return m_strName; }
 	bool IsFinish() const { return m_bFinish; }
+	
+	tAnimFrm& GetFrame(int _iIdx) { return m_vecFrm[_iIdx]; }
 	void SetFrame(int _iFrameIdx)
 	{
 		m_bFinish = false; 
 		m_iCurFrm = _iFrameIdx;
 		m_fAccTime = 0.f;
 	}
+	int GetMaxFrame() const { return m_vecFrm.size(); }
 
 private:
 	void SetName(const wstring& _strName) { m_strName = _strName; }
