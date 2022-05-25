@@ -7,6 +7,7 @@
 #include "CPathMgr.h"
 #include "CCollisionMgr.h"
 #include "CEventMgr.h"
+#include "CCamera.h"
 
 Core::Core()
 	: m_hWnd(nullptr)
@@ -69,6 +70,7 @@ void Core::progress()
 	// === === === ===
 	CTimeMgr::GetInst()->update();
 	CKeyMgr::GetInst()->update();
+	CCamera::GetInst()->update();
 	
 	
 	// === === === ===

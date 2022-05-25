@@ -53,6 +53,11 @@ public:
 		return Vec2(x * _vOther.x, y * _vOther.y);
 	}
 
+	Vec2 operator *(float _i)
+	{
+		return Vec2(x * _i, y * _i);
+	}
+
 	Vec2 operator *(int _i)
 	{
 		return Vec2(x * (float)_i, y * (float)_i);
@@ -62,6 +67,12 @@ public:
 	{
 		assert(!(0.f == _vOther.x || 0.f == _vOther.y));
 		return Vec2(x / _vOther.x, y / _vOther.y);
+	}
+
+	Vec2 operator /(float _f)
+	{
+		assert(!(0.f == _f));
+		return Vec2(x / _f, y / _f);
 	}
 
 	Vec2& Normalize()
