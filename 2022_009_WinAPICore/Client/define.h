@@ -28,10 +28,13 @@
 // Math
 constexpr float PI = 3.1415926536f;
 
+constexpr UINT TILE_SIZE = 64;
+
 // Type Definition
 enum class GROUP_TYPE
 {
 	DEFAULT,
+	TILE,
 	PLAYER,
 	MONSTER,
 	PROJ_PLAYER,

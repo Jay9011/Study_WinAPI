@@ -53,6 +53,9 @@
 #include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CTexture.cpp"
 
 
+#include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CTile.cpp"
+
+
 #include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CTimeMgr.cpp"
 
 
