@@ -39,7 +39,7 @@ public:
 		m_iCurFrm = _iFrameIdx;
 		m_fAccTime = 0.f;
 	}
-	int GetMaxFrame() const { return m_vecFrm.size(); }
+	UINT GetMaxFrame() const { return (UINT)m_vecFrm.size(); }
 
 private:
 	void SetName(const wstring& _strName) { m_strName = _strName; }
