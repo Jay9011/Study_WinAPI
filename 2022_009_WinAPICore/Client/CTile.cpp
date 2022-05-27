@@ -5,7 +5,7 @@
 
 CTile::CTile()
     : m_pTileTex(nullptr)
-    , m_iIdx(47)
+    , m_iIdx(21)
 {
     SetScale(Vec2((float)TILE_SIZE, (float)TILE_SIZE));
 }
