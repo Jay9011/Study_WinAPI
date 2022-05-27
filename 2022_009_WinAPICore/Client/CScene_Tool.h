@@ -11,6 +11,8 @@ public:
 	void Enter() override;
 	void Exit() override;
 
+	void SetTileIdx();
+
 public:
 	CScene_Tool();
 	~CScene_Tool() override;
