@@ -8,6 +8,7 @@
 #include "CCollisionMgr.h"
 #include "CEventMgr.h"
 #include "CCamera.h"
+#include "CUIMgr.h"
 
 Core::Core()
 	: m_hWnd(nullptr)
@@ -78,6 +79,7 @@ void Core::progress()
 	// === === === ===
 	CSceneMgr::GetInst()->update();
 	CCollisionMgr::GetInst()->update();	// 충돌 체크
+	CUIMgr::GetInst()->update();		// UI 이벤트 체크
 
 
 	// === === === ===

@@ -26,6 +26,9 @@
 #include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CObject.cpp"
 
 
+#include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CPanelUI.cpp"
+
+
 #include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CPathMgr.cpp"
 
 
@@ -60,6 +63,12 @@
 
 
 #include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CKeyMgr.cpp"
+
+
+#include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CUI.cpp"
+
+
+#include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CUIMgr.cpp"
 
 
 #include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\func.cpp"
