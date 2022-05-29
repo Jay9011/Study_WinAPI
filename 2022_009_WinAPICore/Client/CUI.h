@@ -28,10 +28,11 @@ public:
     /* === === === === === === === === ===
                   Get / Set
      === === === === === === === === === */
-    CUI* GetParent() const   { return m_pParentUI; }
-    void AddChild(CUI* _pUI) { m_vecChildUI.push_back(_pUI); _pUI->m_pParentUI = this; }
-    Vec2 GetFinalPos() const { return m_vFinalPos; }
-    bool IsMouseOn() const   { return m_bMouseOn; }
+          CUI*          GetParent()   const { return m_pParentUI; }
+          void          AddChild(CUI* _pUI) { m_vecChildUI.push_back(_pUI); _pUI->m_pParentUI = this; }
+    const vector<CUI*>& GetChildUI()  const { return m_vecChildUI; }
+          Vec2          GetFinalPos() const { return m_vFinalPos; }
+          bool          IsMouseOn()   const { return m_bMouseOn; }
     
     void update() override;
     void finalupdate() override;
