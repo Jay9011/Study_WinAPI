@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CScene_Tool.h"
+#include "resource.h"
 
 #include "Core.h"
 #include "CResMgr.h"
@@ -7,8 +8,10 @@
 #include "CSceneMgr.h"
 
 #include "CTile.h"
-#include "CUI.h"
-#include "resource.h"
+#include "CPanelUI.h"
+#include "CBtnUI.h"
+
+#include "CUIMgr.h"
 
 CScene_Tool::CScene_Tool() = default;
 
@@ -19,6 +22,11 @@ void CScene_Tool::update()
 	CScene::update();
 
 	SetTileIdx();
+
+	if (KEY_TAP(KEY::LSHIFT))
+	{
+		CUIMgr::GetInst()->SetFocusedUI(m_pUI);
+	}
 }
 
 void CScene_Tool::Enter()
@@ -29,19 +37,25 @@ void CScene_Tool::Enter()
 	// UI 하나 만들어보기
 	Vec2 vResolution = Core::GetInst()->GetResolution();
 
-	CUI* pUI = new CUI(false);
-	pUI->SetName(L"ParentUI");
-	pUI->SetScale(Vec2(500.f, 300.f));
-	pUI->SetPos(Vec2(vResolution.x - pUI->GetScale().x, 0.f));
+	CUI* pPanelUI = new CPanelUI;
+	pPanelUI->SetName(L"ParentUI");
+	pPanelUI->SetScale(Vec2(500.f, 300.f));
+	pPanelUI->SetPos(Vec2(vResolution.x - pPanelUI->GetScale().x, 0.f));
 
-	CUI* pChildUI = new CUI(false);
-	pChildUI->SetName(L"ChildUI");
-	pChildUI->SetScale(Vec2(100.f, 40.f));
-	pChildUI->SetPos(Vec2(0.f, 0.f));
+	CUI* pBtnUI = new CBtnUI;
+	pBtnUI->SetName(L"ChildUI");
+	pBtnUI->SetScale(Vec2(100.f, 40.f));
+	pBtnUI->SetPos(Vec2(0.f, 0.f));
 
-	pUI->AddChild(pChildUI);
+	pPanelUI->AddChild(pBtnUI);
 
-	AddObject(pUI, GROUP_TYPE::UI);
+	AddObject(pPanelUI, GROUP_TYPE::UI);
+
+	CUI* pClonePanelUI = pPanelUI->Clone();
+	pClonePanelUI->SetPos(pClonePanelUI->GetPos() + Vec2(-300.f, 0.f));
+	AddObject(pClonePanelUI, GROUP_TYPE::UI);
+
+	m_pUI = pClonePanelUI;
 
 	// Camera Look 지정
 	CCamera::GetInst()->SetLookAt(vResolution * .5f);

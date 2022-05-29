@@ -33,7 +33,8 @@ public:
     const vector<CUI*>& GetChildUI()  const { return m_vecChildUI; }
           Vec2          GetFinalPos() const { return m_vFinalPos; }
           bool          IsMouseOn()   const { return m_bMouseOn; }
-    
+          bool          IsLbtnDown()  const { return m_bLbtnDown; }
+
     void update() override;
     void finalupdate() override;
     void render(HDC _dc) override;
@@ -44,8 +45,9 @@ private:
 
 public:
     CUI(bool _bCamAff);
+    CUI(const CUI& _origin);
     ~CUI() override;
-    CLONE(CUI);
+    CUI* Clone() override = 0;
 
     friend class CUIMgr;
 };

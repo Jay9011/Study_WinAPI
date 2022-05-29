@@ -6,11 +6,6 @@ class CAnimator;
 
 class CObject
 {
-public:
-	CObject();
-	CObject(const CObject& _origin);
-	virtual ~CObject();
-
 private:
 	wstring		m_strName;
 
@@ -25,7 +20,6 @@ private:
 	CCollider* m_pCollider;
 	CAnimator* m_pAnimator;
 
-
 public:
 	virtual void update() = 0;
 	virtual void finalupdate();
@@ -33,7 +27,7 @@ public:
 	virtual void render(HDC _dc);
 	void component_render(HDC _dc);
 
-	virtual CObject* Clone() = 0;
+	
 
 	/* === === === === === === === === ===
 			Collider ฐüทร
@@ -66,6 +60,12 @@ public:
 
 private:
 	void SetDead() { m_bAlive = false; }
+
+public:
+	CObject();
+	CObject(const CObject& _origin);
+	virtual ~CObject();
+	virtual CObject* Clone() = 0;
 
 	friend class CEventMgr;
 };

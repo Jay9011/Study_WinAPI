@@ -5,6 +5,9 @@
 #include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CAnimator.cpp"
 
 
+#include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CBtnUI.cpp"
+
+
 #include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CCamera.cpp"
 
 

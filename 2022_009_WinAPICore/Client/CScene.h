@@ -5,10 +5,6 @@ class CObject;
 
 class CScene
 {
-public:
-	CScene();
-	virtual ~CScene();
-
 private:
 	vector<CObject*>	m_arrObj[(UINT)GROUP_TYPE::END];	// 오브젝트를 저장 및 관리할 백터를 그룹 개수만큼 선언
 	wstring				m_strName;	// Scene 이름
@@ -24,11 +20,6 @@ public:
 	virtual void finalupdate();
 	virtual void render(HDC _dc);
 
-	void  SetName(const wstring& _strName) { m_strName = _strName; }
-	const wstring& GetName()               { return m_strName; }
-
-	UINT GetTileX() const { return m_iTileX; }
-	UINT GetTileY() const { return m_iTileY; }
 
 /*
 	Object Control
@@ -38,12 +29,28 @@ public:
 		m_arrObj[(UINT)_eType].push_back(_pObj);
 	}
 
-	const vector<CObject*>& GetGroupObject(GROUP_TYPE _eType) { return m_arrObj[(UINT)_eType]; }
+	const vector<CObject*>& GetGroupObject(GROUP_TYPE _eType) const { return m_arrObj[(UINT)_eType]; }
+		  vector<CObject*>& GetUIGroup()							{ return m_arrObj[(UINT)GROUP_TYPE::UI]; }
 
 	void DeleteGroup(GROUP_TYPE _eTarget);
 	void DeleteAll();
 	
 	void CreateTile(UINT _iXCount, UINT _iYCount);
+
+
+/*
+	Get & Set
+*/
+	void  SetName(const wstring& _strName) { m_strName = _strName; }
+	const wstring& GetName() { return m_strName; }
+
+	UINT GetTileX() const { return m_iTileX; }
+	UINT GetTileY() const { return m_iTileY; }
+
+
+public:
+	CScene();
+	virtual ~CScene();
 
 };
 
