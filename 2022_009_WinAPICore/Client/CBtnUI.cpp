@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "CBtnUI.h"
 
 CBtnUI::CBtnUI()
@@ -23,4 +24,8 @@ void CBtnUI::MouseLBtnUp()
 
 void CBtnUI::MouseLBtnClicked()
 {
+	if (nullptr == m_pFunc)
+		return;
+
+	m_pFunc(m_param1, m_param2);
 }

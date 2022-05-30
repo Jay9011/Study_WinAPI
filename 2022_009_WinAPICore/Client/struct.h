@@ -92,4 +92,11 @@ public:
 	{
 		return (float)sqrt(pow(x, 2) + pow(y, 2));
 	}
+
+	bool IsZero()
+	{
+		if (x == 0.f && y == 0.f)
+			return true;
+		return false;
+	}
 };
