@@ -34,7 +34,7 @@ void CScene_Tool::update()
 
 	if (KEY_TAP(KEY::CTRL))
 	{
-		LoadTile(L"tile\\Test.tile");
+		LoadTileData();
 	}
 }
 
@@ -139,15 +139,12 @@ void CScene_Tool::SaveTileData()
 
 }
 
-void CScene_Tool::SaveTile(const wstring& _strRelativePath)
+void CScene_Tool::SaveTile(const wstring& _strFilePath)
 {
-	wstring strFilePath = CPathMgr::GetInst()->GetContentPath();
-	strFilePath += _strRelativePath;
-
 	// 커널 오브젝트
 	FILE* pFile = nullptr;
 
-	_wfopen_s(&pFile, strFilePath.c_str(), L"wb");
+	_wfopen_s(&pFile, _strFilePath.c_str(), L"wb");
 	
 	// 파일 열기 실패
 	assert(pFile);
@@ -169,6 +166,37 @@ void CScene_Tool::SaveTile(const wstring& _strRelativePath)
 	}
 
 	fclose(pFile);
+}
+
+void CScene_Tool::LoadTileData()
+{
+	wchar_t szName[256] = {};
+
+	OPENFILENAME ofn = {};
+
+	ofn.lStructSize = sizeof(OPENFILENAME);			// 구조체 크기
+	ofn.hwndOwner = Core::GetInst()->GetMainHWnd();	// 최상위 부모 윈도우 핸들
+
+	ofn.lpstrFilter = L"ALL\0*.*\0Tile\0*.tile\0";	// 사용 가능한 필터 리스트
+	ofn.nFilterIndex = 0;							// 처음 자동 지정되는 필터 Index
+
+	ofn.lpstrFileTitle = nullptr;
+	ofn.nMaxFileTitle = 0;
+	ofn.nMaxFile = sizeof(szName);					// 저장 가능한 최종 경로 최대 길이 크기
+	ofn.lpstrFile = szName;							// 최종 경로가 들어있는 포인터 주소
+
+	wstring strTileFolder = CPathMgr::GetInst()->GetContentPath();
+	strTileFolder += L"tile";
+
+	ofn.lpstrInitialDir = strTileFolder.c_str();	// 파일 저장하는 초기 경로
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+	// Modal
+	if (GetOpenFileName(&ofn))
+	{
+		wstring strRelativePath = CPathMgr::GetInst()->GetRelativePath(szName);
+		LoadTile(strRelativePath);
+	}
 }
 
 void ChangeScene(DWORD_PTR, DWORD_PTR)

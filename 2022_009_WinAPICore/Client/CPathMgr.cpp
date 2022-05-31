@@ -32,9 +32,16 @@ void CPathMgr::init()
 	*/
 	wcscat_s(m_szContentPath, 255, L"\\bin\\content\\\0");	// 혹시라도 뒤에 문자열이 남아있을 수 있으므로 NULL문자로 종료시켜준다.
 
-
-
-
-
 	//SetWindowText(Core::GetInst()->GetMainHWnd(), m_szContentPath);	// Window 타이틀바에 현재 Current 경로 보이기
+}
+
+wstring CPathMgr::GetRelativePath(const wchar_t* _filepath)
+{
+	wstring strFilePath = _filepath;
+
+	size_t iAbsLen = wcslen(m_szContentPath);
+	size_t iFullLen = strFilePath.length();
+	wstring strRelativePath = strFilePath.substr(iAbsLen, iFullLen - iAbsLen);
+
+	return strRelativePath;
 }
