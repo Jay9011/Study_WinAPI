@@ -10,6 +10,9 @@ private:
     int       m_iImgIdx;
 
 public:
+    virtual void Save(FILE* _pFile);
+    virtual void Load(FILE* _pFile);
+
     void SetTexture(CTexture* _pTex)
     {
         m_pTileTex = _pTex;

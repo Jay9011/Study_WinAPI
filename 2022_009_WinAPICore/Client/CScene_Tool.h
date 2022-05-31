@@ -12,6 +12,8 @@ public:
 	void Exit() override;
 
 	void SetTileIdx();
+	void SaveTileData();
+	void SaveTile(const wstring& _strRelativePath);
 
 public:
 	CScene_Tool();

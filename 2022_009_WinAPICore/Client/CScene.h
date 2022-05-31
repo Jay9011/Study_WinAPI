@@ -36,6 +36,7 @@ public:
 	void DeleteAll();
 	
 	void CreateTile(UINT _iXCount, UINT _iYCount);
+	void LoadTile(const wstring& _strRelativePath);
 
 
 /*
