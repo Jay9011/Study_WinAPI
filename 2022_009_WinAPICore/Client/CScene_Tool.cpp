@@ -51,23 +51,24 @@ void CScene_Tool::Enter()
 	pPanelUI->SetScale(Vec2(300.f, 150.f));
 	pPanelUI->SetPos(Vec2(vResolution.x - pPanelUI->GetScale().x, 0.f));
 
-	CBtnUI* pBtnUI = new CBtnUI;
+	CUI* pBtnUI = new CBtnUI;
 	pBtnUI->SetName(L"ChildUI");
 	pBtnUI->SetScale(Vec2(100.f, 40.f));
 	pBtnUI->SetPos(Vec2(0.f, 0.f));
-	//pBtnUI->SetClickedCallBack(ChangeScene, 0, 0);
+	((CBtnUI*)pBtnUI)->SetClickedCallBack(this, (SCENE_MEMFUNC)&CScene_Tool::SaveTileData);
 
 	pPanelUI->AddChild(pBtnUI);
 
 	AddObject(pPanelUI, GROUP_TYPE::UI);
 
-	CUI* pClonePanelUI = pPanelUI->Clone();
+	// 복사본 UI
+	/*CUI* pClonePanelUI = pPanelUI->Clone();
 	pClonePanelUI->SetPos(pClonePanelUI->GetPos() + Vec2(-300.f, 0.f));
-	((CBtnUI*)pClonePanelUI->GetChildUI()[0])->SetClickedCallBack(ChangeScene, 0, 0);
+	((CBtnUI*)pClonePanelUI->GetChildUI()[0])->SetClickedCallBack(&ChangeScene, 0, 0);
 
 	AddObject(pClonePanelUI, GROUP_TYPE::UI);
 
-	m_pUI = pClonePanelUI;
+	m_pUI = pClonePanelUI;*/
 
 	// Camera Look 지정
 	CCamera::GetInst()->SetLookAt(vResolution * .5f);
