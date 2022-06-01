@@ -10,12 +10,13 @@
 #include "CCamera.h"
 #include "CUIMgr.h"
 
+#include "CResMgr.h"
+#include "CTexture.h"
+
 Core::Core()
 	: m_hWnd(nullptr)
 	, m_ptResolution{}
 	, m_hdc(nullptr)
-	, m_hBit(nullptr)
-	, m_memDC(nullptr)
 	, m_arrBrush{}
 	, m_arrPen{}
 {
@@ -24,8 +25,6 @@ Core::Core()
 Core::~Core()
 {
 	ReleaseDC(m_hWnd, m_hdc);
-	DeleteDC(m_memDC);
-	DeleteObject(m_hBit);
 
 	for (UINT i = 0; i < (UINT)PEN_TYPE::END; i++)
 	{
@@ -42,15 +41,11 @@ int Core::init(HWND _hWnd, POINT _ptResolution)
 	RECT rt = { 0, 0, m_ptResolution.x, m_ptResolution.y };
 	AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, true);
 	SetWindowPos(m_hWnd, nullptr, 100, 100, rt.right - rt.left, rt.bottom - rt.top, 0);
-
+	
 	m_hdc = GetDC(m_hWnd);
 
-	// 이중 버퍼링 용도의 비트맵과 DC를 만든다.
-	m_hBit = CreateCompatibleBitmap(m_hdc, m_ptResolution.x, m_ptResolution.y);
-	m_memDC = CreateCompatibleDC(m_hdc);
-
-	HBITMAP hOldBit = (HBITMAP)SelectObject(m_memDC, m_hBit);
-	DeleteObject(hOldBit);	// memDC가 가지고 있던 1pixel짜리 더미 Bitmap을 삭제
+	// 이중 버퍼링 용도의 텍스처 한 장을 만든다.
+	m_pMemTex = CResMgr::GetInst()->CreateTexture(L"BackBuffer", (UINT)m_ptResolution.x, (UINT)m_ptResolution.y);
 
 	// 자주 사용 할 펜 및 브러쉬 설정
 	CreateBrushPen();
@@ -59,6 +54,7 @@ int Core::init(HWND _hWnd, POINT _ptResolution)
 	CPathMgr::GetInst()->init();
 	CTimeMgr::GetInst()->init();
 	CKeyMgr::GetInst()->init();
+	CCamera::GetInst()->init();
 	CSceneMgr::GetInst()->init();
 	
 	return S_OK;
@@ -86,13 +82,14 @@ void Core::progress()
 	//    Rendering
 	// === === === ===
 	// 화면 Clear
-	Rectangle(m_memDC, -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);
+	Rectangle(m_pMemTex->GetDC(), -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);
 
-	CSceneMgr::GetInst()->render(m_memDC);
+	CSceneMgr::GetInst()->render(m_pMemTex->GetDC());
+	CCamera::GetInst()->render(m_pMemTex->GetDC());
 
 	BitBlt(m_hdc
 		, 0, 0, m_ptResolution.x, m_ptResolution.y
-		, m_memDC
+		, m_pMemTex->GetDC()
 		, 0, 0
 		, SRCCOPY
 	);

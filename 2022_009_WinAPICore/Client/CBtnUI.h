@@ -17,7 +17,7 @@ private:
 
     CScene*       m_pSceneInst;
     SCENE_MEMFUNC m_pSceneFunc;
-
+    
 public:
     void MouseOn() override;
     void MouseLBtnDown() override;
