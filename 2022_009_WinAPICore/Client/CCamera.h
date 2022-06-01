@@ -10,8 +10,8 @@ enum class CAM_EFFECT
 struct tCamEffect
 {
 	CAM_EFFECT eEffect;
-	float      m_fDuration;
-	float      m_fCurTime;
+	float      fDuration;
+	float      fCurTime;
 };
 
 
@@ -33,12 +33,9 @@ private:
 	float	   m_fSpeed0;		// 최초 속도
 	float	   m_fAccSpeed;		// 시간당 속도
 
-	CAM_EFFECT m_eEffect;			// 카메라 효과
-	CTexture*  m_pVeilTex;			// 카메라 가림막 텍스처 (검은색)
-	float      m_fEffectDuration;	// 효과 진행 예정 시간
-	float      m_fCurTime;			// 현재 효과 진행 시간
-
-	vector<tCamEffect> m_vecCamEffect;	// 카메라 효과 벡터
+	// 카메라 이펙트
+	CTexture*          m_pVeilTex;		// 카메라 가림막 텍스처 (검은색)
+	list<tCamEffect> m_listCamEffect;	// 카메라 효과 리스트
 
 public:
 	void init();
@@ -64,21 +61,25 @@ public:
 	=== === === === === === === === === */
 	void FadeIn(float _fDuration)
 	{
-		if (0.f == _fDuration)
-			assert(0);
+		if (0.f == _fDuration) assert(0);
 
-		m_eEffect = CAM_EFFECT::FADE_IN;
-		m_fEffectDuration = _fDuration;
-		m_fCurTime = 0;
+		tCamEffect ef = {};
+		ef.eEffect = CAM_EFFECT::FADE_IN;
+		ef.fDuration = _fDuration;
+		ef.fCurTime = 0.f;
+
+		m_listCamEffect.push_back(ef);
 	}
 	void FadeOut(float _fDuration)
 	{
-		if (0.f == _fDuration)
-			assert(0);
+		if (0.f == _fDuration) assert(0);
 		
-		m_eEffect = CAM_EFFECT::FADE_OUT;
-		m_fEffectDuration = _fDuration;
-		m_fCurTime = 0;
+		tCamEffect ef = {};
+		ef.eEffect = CAM_EFFECT::FADE_OUT;
+		ef.fDuration = _fDuration;
+		ef.fCurTime = 0.f;
+		
+		m_listCamEffect.push_back(ef);
 	}
 
 private:

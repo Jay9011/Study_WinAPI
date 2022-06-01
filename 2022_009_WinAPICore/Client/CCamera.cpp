@@ -14,10 +14,7 @@ CCamera::CCamera()
 	, m_fTime(.5f)
 	, m_fSpeed(0.f)
 	, m_fAccTime(.5f)
-	, m_eEffect(CAM_EFFECT::NONE)
 	, m_pVeilTex(nullptr)
-	, m_fEffectDuration(0.f)
-	, m_fCurTime(0.f)
 {
 	
 }
@@ -59,30 +56,28 @@ void CCamera::update()
 
 void CCamera::render(HDC _dc)
 {
-	if (CAM_EFFECT::NONE == m_eEffect)
+	if (m_listCamEffect.empty())
 		return;
 
 	// 시간 누적 값을 체크
-	m_fCurTime += fDT;
-
-	// 진행 시간이 효과 최대 시간을 넘어선 경우
-	if (m_fEffectDuration < m_fCurTime)
-	{
-		// 효과 종료
-		m_eEffect = CAM_EFFECT::NONE;
-		return;
-	}
+	tCamEffect& effect = m_listCamEffect.front();
+	effect.fCurTime += fDT;
 
 	float fRatio = 0.f;	// 효과 진행 비율
-	fRatio = m_fCurTime / m_fEffectDuration;
+	fRatio = effect.fCurTime / effect.fDuration;
+	
+	// 비율 값 보정 (1을 넘거나 0보다 내려가지 않게 보정해줘야 한다.)
+	if (fRatio < 0.f)
+		fRatio = 0.f;
+	if (fRatio > 1.f)
+		fRatio = 1.f;
 
 	int iAlpha = 0;
-
-	if (CAM_EFFECT::FADE_OUT == m_eEffect)
+	if (CAM_EFFECT::FADE_OUT == effect.eEffect)
 	{
 		iAlpha = int(255.f * fRatio);
 	}
-	else if (CAM_EFFECT::FADE_IN == m_eEffect)
+	else if (CAM_EFFECT::FADE_IN == effect.eEffect)
 	{
 		iAlpha = int(255.f * (1.f - fRatio));
 	}
@@ -102,6 +97,13 @@ void CCamera::render(HDC _dc)
 		, m_pVeilTex->Width(), m_pVeilTex->Height()
 		, bf);
 
+
+	// 진행 시간이 효과 최대 시간을 넘어선 경우
+	if (effect.fDuration < effect.fCurTime)
+	{
+		// 효과 제거
+		m_listCamEffect.pop_front();
+	}
 }
 
 void CCamera::CalDiff()
