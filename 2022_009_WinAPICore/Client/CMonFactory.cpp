@@ -7,6 +7,7 @@
 #include "CIdleState.h"
 #include "CTraceState.h"
 
+
 CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 {
 	CMonster* pMon = nullptr;
@@ -17,6 +18,15 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 	{
 		pMon = new CMonster;
 		pMon->SetPos(_vPos);
+
+		tMonInfo info = {};
+		info.fHP = 100.f;
+		info.fSpeed = 150.f;
+		info.fAtt = 10.f;
+		info.fAttRange = 50.f;
+		info.fRecogRange = 300.f;
+
+		pMon->SetMonInfo(info);
 
 		AI* pAI = new AI;
 		pAI->AddState(new CIdleState);
@@ -32,5 +42,7 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 	default:
 		break;
 	}
-	return nullptr;
+	
+	assert(pMon);
+	return pMon;
 }

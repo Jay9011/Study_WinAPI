@@ -40,6 +40,9 @@ void CScene_Tool::update()
 
 void CScene_Tool::Enter()
 {
+	// 툴 Scene 에서 사용할 메뉴 추가
+	Core::GetInst()->DockingMenu();
+	
 	// 타일 생성
 	CreateTile(5, 5);
 
@@ -76,6 +79,8 @@ void CScene_Tool::Enter()
 
 void CScene_Tool::Exit()
 {
+	Core::GetInst()->DividieMenu();
+
 	DeleteAll();
 }
 

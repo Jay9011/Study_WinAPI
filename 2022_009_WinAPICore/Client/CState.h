@@ -1,6 +1,7 @@
 #pragma once
 
 class AI;
+class CMonster;
 
 class CState
 {
@@ -9,8 +10,9 @@ private:
 	MON_STATE m_eState;
 
 public:
-	AI*       GetAI()   const { return m_pAI; }
-	MON_STATE GetType() const { return m_eState; }
+	AI*       GetAI() const      { return m_pAI; }
+	MON_STATE GetType() const    { return m_eState; }
+	CMonster* GetMonster() const;
 
 public:
 	virtual void update() = 0;

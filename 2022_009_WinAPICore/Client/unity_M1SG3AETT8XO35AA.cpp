@@ -29,6 +29,9 @@
 #include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CMissile.cpp"
 
 
+#include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CMonFactory.cpp"
+
+
 #include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CMonster.cpp"
 
 
@@ -75,6 +78,9 @@
 
 
 #include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CKeyMgr.cpp"
+
+
+#include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CTraceState.cpp"
 
 
 #include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CUI.cpp"
