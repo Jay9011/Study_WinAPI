@@ -76,3 +76,14 @@ enum class EVENT_TYPE
 	SCENE_CHANGE,
 	END
 };
+
+enum class MON_STATE
+{
+	IDLE,
+	PATROL,
+	TRACE,
+	ATT,
+	RUN,
+	DEAD,
+	END
+};
