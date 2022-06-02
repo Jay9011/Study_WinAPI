@@ -16,6 +16,10 @@
 #include "CRigidBody.h"
 
 CPlayer::CPlayer()
+	: m_eCurState(PLAYER_STATE::IDLE)
+	, m_ePrevState(PLAYER_STATE::IDLE)
+	, m_iDir(PLAYER_DIRECTION::DOWN)
+	, m_iPrevDir(PLAYER_DIRECTION::DOWN)
 {
 	CreateCollider();
 	GetCollider()->SetOffsetPos(Vec2(0.f, 0.f));
@@ -27,58 +31,27 @@ CPlayer::CPlayer()
 	// Texture 로딩하기
 	CTexture* pTex = CResMgr::GetInst()->LoadTexture(L"PlayerTex", L"texture\\link_0.bmp");
 	CreateAnimator();
-	GetAnimator()->CreateAnimation(L"WALK_DOWN", pTex, Vec2(0.f, 260.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .1f, 10);
+	
+	GetAnimator()->CreateAnimation(L"IDLE_UP"   , pTex, Vec2(0.f, 130.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .5f,  1);
+	GetAnimator()->CreateAnimation(L"IDLE_DOWN" , pTex, Vec2(0.f,   0.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .5f,  3);
+	GetAnimator()->CreateAnimation(L"IDLE_LEFT" , pTex, Vec2(0.f,  65.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .5f,  3);
+	GetAnimator()->CreateAnimation(L"IDLE_RIGHT", pTex, Vec2(0.f, 195.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .5f,  3);
+	
+	GetAnimator()->CreateAnimation(L"WALK_UP"   , pTex, Vec2(0.f, 390.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .1f, 10);
+	GetAnimator()->CreateAnimation(L"WALK_DOWN" , pTex, Vec2(0.f, 260.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .1f, 10);
+	GetAnimator()->CreateAnimation(L"WALK_LEFT" , pTex, Vec2(0.f, 325.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .1f, 10);
+	GetAnimator()->CreateAnimation(L"WALK_RIGHT", pTex, Vec2(0.f, 455.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .1f, 10);
 
-	CAnimation* pAnim = GetAnimator()->FindAnimation(L"WALK_DOWN");
-	for (UINT i = 0; i < pAnim->GetMaxFrame(); i++)
-	{
-		pAnim->GetFrame(i).vOffSet = Vec2(0.f, -20.f);
-	}
-
-	GetAnimator()->Play(L"WALK_DOWN", true);
+	GetAnimator()->Play(L"IDLE_DOWN", true);
 }
 
 CPlayer::~CPlayer() = default;
 
 void CPlayer::update()
 {
-	CRigidBody* pRigid = GetRigidBody();
-
-	if (KEY_HOLD(KEY::W))
-	{
-		pRigid->AddForce(Vec2(0.f, -200.f));
-	}
-	else if (KEY_HOLD(KEY::S))
-	{
-		pRigid->AddForce(Vec2(0.f, 200.f));
-	}
-
-	if (KEY_HOLD(KEY::A))
-	{
-		pRigid->AddForce(Vec2(-200.f, 0.f));
-	}
-	else if (KEY_HOLD(KEY::D))
-	{
-		pRigid->AddForce(Vec2(200.f, 0.f));
-	}
-
-	if (KEY_TAP(KEY::W))
-	{
-		pRigid->AddVelocity(Vec2(0.f, -100.f));
-	}
-	else if (KEY_TAP(KEY::S))
-	{
-		pRigid->AddVelocity(Vec2(0.f, 100.f));
-	}
-
-	if (KEY_TAP(KEY::A))
-	{
-		pRigid->AddVelocity(Vec2(-100.f, 0.f));
-	}
-	else if (KEY_TAP(KEY::D))
-	{
-		pRigid->AddVelocity(Vec2(100.f, 0.f));
-	}
+	update_move();
+	update_state();
+	update_animation();
 
 	if (KEY_TAP(KEY::SPACE))
 	{
@@ -86,6 +59,9 @@ void CPlayer::update()
 	}
 	
 	GetAnimator()->update();
+
+	m_ePrevState = m_eCurState;
+	m_iPrevDir = m_iDir;
 }
 
 void CPlayer::render(HDC _dc)
@@ -107,4 +83,123 @@ void CPlayer::CreateMissile()
 	pMissile->SetDir(Vec2(0.f, -1.f));
 
 	CreateObject(pMissile, GROUP_TYPE::PROJ_PLAYER);
+}
+
+void CPlayer::update_state()
+{
+	if (KEY_TAP(KEY::W))
+	{
+		m_iDir = PLAYER_DIRECTION::UP;
+		m_eCurState = PLAYER_STATE::WALK;
+	}
+	else if (KEY_TAP(KEY::S))
+	{
+		m_iDir = PLAYER_DIRECTION::DOWN;
+		m_eCurState = PLAYER_STATE::WALK;
+	}
+	else if (KEY_TAP(KEY::A))
+	{
+		m_iDir = PLAYER_DIRECTION::LEFT;
+		m_eCurState = PLAYER_STATE::WALK;
+	}
+	else if (KEY_TAP(KEY::D))
+	{
+		m_iDir = PLAYER_DIRECTION::RIGHT;
+		m_eCurState = PLAYER_STATE::WALK;
+	}
+	
+	if (0.f == GetRigidBody()->GetSpeed())
+	{
+		m_eCurState = PLAYER_STATE::IDLE;
+	}
+}
+
+void CPlayer::update_move()
+{
+	CRigidBody* pRigid = GetRigidBody();
+	
+	if (KEY_HOLD(KEY::W))
+	{
+		pRigid->AddForce(Vec2(0.f, -200.f));
+	}
+	if (KEY_HOLD(KEY::S))
+	{
+		pRigid->AddForce(Vec2(0.f, 200.f));
+	}
+
+	if (KEY_HOLD(KEY::A))
+	{
+		pRigid->AddForce(Vec2(-200.f, 0.f));
+	}
+	if (KEY_HOLD(KEY::D))
+	{
+		pRigid->AddForce(Vec2(200.f, 0.f));
+	}
+
+	if (KEY_TAP(KEY::W))
+	{
+		pRigid->AddVelocity(Vec2(0.f, -100.f));
+	}
+	if (KEY_TAP(KEY::S))
+	{
+		pRigid->AddVelocity(Vec2(0.f, 100.f));
+	}
+
+	if (KEY_TAP(KEY::A))
+	{
+		pRigid->AddVelocity(Vec2(-100.f, 0.f));
+	}
+	if (KEY_TAP(KEY::D))
+	{
+		pRigid->AddVelocity(Vec2(100.f, 0.f));
+	}
+}
+
+void CPlayer::update_animation()
+{
+	if (m_ePrevState == m_eCurState && m_iPrevDir == m_iDir)
+		return;
+
+	// 상태 변경에 따라 애니메이션 전환
+	switch (m_eCurState)
+	{ 
+	case PLAYER_STATE::IDLE:
+		switch (m_iDir)
+		{
+		case PLAYER_DIRECTION::UP:
+			GetAnimator()->Play(L"IDLE_UP", true);
+			break;
+		case PLAYER_DIRECTION::DOWN:
+			GetAnimator()->Play(L"IDLE_DOWN", true);
+			break;
+		case PLAYER_DIRECTION::LEFT:
+			GetAnimator()->Play(L"IDLE_LEFT", true);
+			break;
+		case PLAYER_DIRECTION::RIGHT:
+			GetAnimator()->Play(L"IDLE_RIGHT", true);
+			break;
+		}
+		break;
+	case PLAYER_STATE::WALK:
+		switch (m_iDir)
+		{
+		case PLAYER_DIRECTION::UP:
+			GetAnimator()->Play(L"WALK_UP", true);
+			break;
+		case PLAYER_DIRECTION::DOWN:
+			GetAnimator()->Play(L"WALK_DOWN", true);
+			break;
+		case PLAYER_DIRECTION::LEFT:
+			GetAnimator()->Play(L"WALK_LEFT", true);
+			break;
+		case PLAYER_DIRECTION::RIGHT:
+			GetAnimator()->Play(L"WALK_RIGHT", true);
+			break;
+		}
+		break;
+	case PLAYER_STATE::ATTCK:
+		break;
+	case PLAYER_STATE::DEAD:
+		break;
+	}
 }
