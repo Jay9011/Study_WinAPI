@@ -1,5 +1,4 @@
 #pragma once
-
 class CMonster;
 
 enum class MON_TYPE

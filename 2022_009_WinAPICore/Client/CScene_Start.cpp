@@ -20,6 +20,7 @@
 #include "AI.h"
 #include "CIdleState.h"
 #include "CTraceState.h"
+#include "CMonFactory.h"
 
 CScene_Start::CScene_Start() = default;
 
@@ -51,6 +52,8 @@ void CScene_Start::Enter()
 	pObj->SetScale(Vec2(100.f, 100.f));
 	AddObject(pObj, GROUP_TYPE::PLAYER);
 
+	RegisterPlayer(pObj);
+
 	//CObject* pOtherPlayer = pObj->Clone();
 	//pOtherPlayer->SetPos(Vec2(740.f, 384.f));
 	//AddObject(pOtherPlayer, GROUP_TYPE::PLAYER);
@@ -59,28 +62,9 @@ void CScene_Start::Enter()
 
 	
 	// 몬스터 배치
-	int iMonCount = 1;
-	float fObjScale = 50.f;
-	
 	Vec2 vResolution = Core::GetInst()->GetResolution();
-
-	AI* pAI = new AI;
-	pAI->AddState(new CIdleState);
-	pAI->AddState(new CTraceState);
-
-	CMonster* pMonsterObj = nullptr;
-	for (int i = 0; i < iMonCount; ++i)
-	{
-		// Monster Object 추가
-		pMonsterObj = new CMonster;
-		pMonsterObj->SetName(L"Monster");
-		pMonsterObj->SetScale(Vec2(fObjScale, fObjScale));
-		pMonsterObj->SetPos(vResolution * .5f - Vec2(0.f, 300.f));
-		
-		pMonsterObj->SetAI(pAI);
-		
-		AddObject(pMonsterObj, GROUP_TYPE::MONSTER);
-	}
+	CMonster* pMon = CMonFactory::CreateMonster(MON_TYPE::NORMAL, vResolution * .5f - Vec2(0.f, 300.f));
+	AddObject(pMon, GROUP_TYPE::MONSTER);
 
 	// 타일 로딩
 	//LoadTile(L"Tile\\start.tile");
@@ -94,8 +78,6 @@ void CScene_Start::Enter()
 	CCamera::GetInst()->SetLookAt(vResolution / 2.f);
 
 	// Camera 효과 지정
-	CCamera::GetInst()->FadeOut(2.f);
-	CCamera::GetInst()->FadeIn(2.f);
 	CCamera::GetInst()->FadeOut(2.f);
 	CCamera::GetInst()->FadeIn(2.f);
 }

@@ -5,6 +5,9 @@
 #include "CSceneMgr.h"
 #include "CScene.h"
 
+#include "AI.h"
+#include "CState.h"
+
 #include "CUIMgr.h"
 
 CEventMgr::CEventMgr() = default;
@@ -66,6 +69,15 @@ void CEventMgr::Excute(const tEvent& _event)
 		CSceneMgr::GetInst()->ChangeScene((SCENE_TYPE)_event.lParam);
 		// 포커스 UI 해제 ( 이전 Scene의 UI를 가리키고 있기 때문 )
 		CUIMgr::GetInst()->SetFocusedUI(nullptr);
+	}
+		break;
+	case EVENT_TYPE::CHANGE_AI_STATE:
+	{
+		// lParam : AI
+		// wParam : Next Type
+		AI* pAI = (AI*)_event.lParam;
+		MON_STATE eNextState = (MON_STATE)_event.wParam;
+		pAI->ChangeState(eNextState);
 	}
 		break;
 	default:

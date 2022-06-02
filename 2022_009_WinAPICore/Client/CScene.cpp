@@ -12,6 +12,7 @@
 CScene::CScene()
 	: m_iTileX(0)
 	, m_iTileY(0)
+	, m_pPlayer(nullptr)
 {}
 
 CScene::~CScene()
@@ -169,7 +170,7 @@ void CScene::render_tile(HDC _dc)
 	{
 		for(int iCurCol = iLTCol; iCurCol < (iLTCol + iClientWidth); ++iCurCol)
 		{
-			if(iCurRow < 0 || iCurRow >= m_iTileY || iCurCol < 0 || iCurCol >= m_iTileX)
+			if(iCurRow < 0 || iCurRow >= (int)m_iTileY || iCurCol < 0 || iCurCol >= (int)m_iTileX)
 				continue;
 			
 			int iIdx = iCurRow * m_iTileX + iCurCol;
