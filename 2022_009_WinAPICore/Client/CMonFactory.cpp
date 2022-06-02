@@ -24,7 +24,7 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 		info.fSpeed = 150.f;
 		info.fAtt = 10.f;
 		info.fAttRange = 50.f;
-		info.fRecogRange = 300.f;
+		info.fRecogRange = 150.f;
 
 		pMon->SetMonInfo(info);
 

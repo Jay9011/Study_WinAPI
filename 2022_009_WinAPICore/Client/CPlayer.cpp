@@ -13,12 +13,16 @@
 #include "CCollider.h"
 #include "CAnimator.h"
 #include "CAnimation.h"
+#include "CRigidBody.h"
 
 CPlayer::CPlayer()
 {
 	CreateCollider();
 	GetCollider()->SetOffsetPos(Vec2(0.f, 0.f));
 	GetCollider()->SetScale(Vec2(20.f, 20.f));
+
+	// RegidBody Setting
+	CreateRigidBody();
 
 	// Texture 로딩하기
 	CTexture* pTex = CResMgr::GetInst()->LoadTexture(L"PlayerTex", L"texture\\link_0.bmp");
@@ -38,33 +42,49 @@ CPlayer::~CPlayer() = default;
 
 void CPlayer::update()
 {
-	Vec2 vPos = GetPos();
+	CRigidBody* pRigid = GetRigidBody();
 
 	if (KEY_HOLD(KEY::W))
 	{
-		vPos.y -= 200.f * fDT;
+		pRigid->AddForce(Vec2(0.f, -200.f));
 	}
 	else if (KEY_HOLD(KEY::S))
 	{
-		vPos.y += 200.f * fDT;
+		pRigid->AddForce(Vec2(0.f, 200.f));
 	}
 
 	if (KEY_HOLD(KEY::A))
 	{
-		vPos.x -= 200.f * fDT;
+		pRigid->AddForce(Vec2(-200.f, 0.f));
 	}
 	else if (KEY_HOLD(KEY::D))
 	{
-		vPos.x += 200.f * fDT;
+		pRigid->AddForce(Vec2(200.f, 0.f));
+	}
+
+	if (KEY_TAP(KEY::W))
+	{
+		pRigid->AddVelocity(Vec2(0.f, -100.f));
+	}
+	else if (KEY_TAP(KEY::S))
+	{
+		pRigid->AddVelocity(Vec2(0.f, 100.f));
+	}
+
+	if (KEY_TAP(KEY::A))
+	{
+		pRigid->AddVelocity(Vec2(-100.f, 0.f));
+	}
+	else if (KEY_TAP(KEY::D))
+	{
+		pRigid->AddVelocity(Vec2(100.f, 0.f));
 	}
 
 	if (KEY_TAP(KEY::SPACE))
 	{
 		CreateMissile();
 	}
-
-	SetPos(vPos);
-
+	
 	GetAnimator()->update();
 }
 

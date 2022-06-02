@@ -3,6 +3,7 @@
 
 class CCollider;
 class CAnimator;
+class CRigidBody;
 
 class CObject
 {
@@ -17,8 +18,9 @@ private:
 	/* === === === === === === === === === ===
 			컴포넌트
 	=== === === === === === === === === === */
-	CCollider* m_pCollider;
-	CAnimator* m_pAnimator;
+	CCollider*  m_pCollider;
+	CAnimator*  m_pAnimator;
+	CRigidBody* m_pRigidBody;
 
 public:
 	virtual void update() = 0;
@@ -38,12 +40,21 @@ public:
 	virtual void OnCollisionEnter(CCollider* _pOther) {}
 	virtual void OnCollisionExit(CCollider* _pOther) {}
 
+	
 	/* === === === === === === === === ===
 			Animator 관련
 	=== === === === === === === === === === */
 	void CreateAnimator();
 	CAnimator* GetAnimator() { return m_pAnimator; }
+	
 
+	/* === === === === === === === === ===
+			RigidBody 관련
+	=== === === === === === === === === === */
+	void CreateRigidBody();
+	CRigidBody* GetRigidBody() { return m_pRigidBody; }
+
+	
 	/* === === === === === === === === ===
 			Get / Set
 	=== === === === === === === === === === */
