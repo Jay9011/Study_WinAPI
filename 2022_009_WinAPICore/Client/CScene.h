@@ -37,7 +37,7 @@ public:
 	
 	void CreateTile(UINT _iXCount, UINT _iYCount);
 	void LoadTile(const wstring& _strRelativePath);
-
+	void render_tile(HDC _dc);
 
 /*
 	Get & Set
