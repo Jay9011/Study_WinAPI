@@ -18,6 +18,7 @@ public:
 	virtual void Enter() = 0;	// 해당 Scene 에 진입 시 호출
 	virtual void Exit()  = 0;	// 해당 Scene 을 탈출 시 호출
 
+	virtual void start();
 	virtual void update();
 	virtual void finalupdate();
 	virtual void render(HDC _dc);

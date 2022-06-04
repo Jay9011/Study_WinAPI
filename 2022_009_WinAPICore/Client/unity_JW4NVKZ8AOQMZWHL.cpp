@@ -23,6 +23,12 @@
 #include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CEventMgr.cpp"
 
 
+#include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CGravity.cpp"
+
+
+#include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CGround.cpp"
+
+
 #include "C:\Projects\C\Jay9011\Study_WinAPI\2022_009_WinAPICore\Client\CIdleState.cpp"
 
 

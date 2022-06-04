@@ -4,6 +4,7 @@
 class CCollider;
 class CAnimator;
 class CRigidBody;
+class CGravity;
 
 class CObject
 {
@@ -21,8 +22,10 @@ private:
 	CCollider*  m_pCollider;
 	CAnimator*  m_pAnimator;
 	CRigidBody* m_pRigidBody;
+	CGravity*   m_pGravity;
 
 public:
+	virtual void start() {};	// Scene 이 시작되기 직전에 호출되는 함수
 	virtual void update() = 0;
 	virtual void finalupdate();
 
@@ -53,6 +56,12 @@ public:
 	=== === === === === === === === === === */
 	void CreateRigidBody();
 	CRigidBody* GetRigidBody() { return m_pRigidBody; }
+
+	/* === === === === === === === === ===
+			Gravity 관련
+	=== === === === === === === === === === */
+	void CreateGravity();
+	CGravity* GetGravity() { return m_pGravity; }
 
 	
 	/* === === === === === === === === ===

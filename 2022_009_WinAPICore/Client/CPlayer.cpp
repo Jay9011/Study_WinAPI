@@ -14,6 +14,7 @@
 #include "CAnimator.h"
 #include "CAnimation.h"
 #include "CRigidBody.h"
+#include "CGravity.h"
 
 CPlayer::CPlayer()
 	: m_eCurState(PLAYER_STATE::IDLE)
@@ -22,7 +23,7 @@ CPlayer::CPlayer()
 	, m_iPrevDir(PLAYER_DIRECTION::DOWN)
 {
 	CreateCollider();
-	GetCollider()->SetOffsetPos(Vec2(0.f, 0.f));
+	GetCollider()->SetOffsetPos(Vec2(0.f, 20.f));
 	GetCollider()->SetScale(Vec2(20.f, 20.f));
 
 	// RegidBody Setting
@@ -43,6 +44,9 @@ CPlayer::CPlayer()
 	GetAnimator()->CreateAnimation(L"WALK_RIGHT", pTex, Vec2(0.f, 455.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .1f, 10);
 
 	GetAnimator()->Play(L"IDLE_DOWN", true);
+
+	// Gravity Setting
+	CreateGravity();
 }
 
 CPlayer::~CPlayer() = default;
@@ -202,4 +206,9 @@ void CPlayer::update_animation()
 	case PLAYER_STATE::DEAD:
 		break;
 	}
+}
+
+void CPlayer::update_gravity()
+{
+	GetRigidBody()->AddForce(Vec2(0.f, 500.f));
 }

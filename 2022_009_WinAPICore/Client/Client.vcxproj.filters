@@ -131,6 +131,12 @@
     <Filter Include="Engine\07. Component\RigidBody">
       <UniqueIdentifier>{54e07855-b34d-4b8d-a2d8-10ffce554aea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\07. Component\Gravity">
+      <UniqueIdentifier>{67e4b7f5-f994-451d-a680-c30690991363}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\Ground">
+      <UniqueIdentifier>{c70e7495-7793-4cdc-9df2-109b1892a163}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -254,7 +260,15 @@
     <ClInclude Include="CMonFactory.h">
       <Filter>Engine\09. Factory\MonFactory</Filter>
     </ClInclude>
-    <ClInclude Include="CRigidBody.h" />
+    <ClInclude Include="CRigidBody.h">
+      <Filter>Engine\07. Component\RigidBody</Filter>
+    </ClInclude>
+    <ClInclude Include="CGround.h">
+      <Filter>Engine\04. Object\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="CGravity.h">
+      <Filter>Engine\07. Component\Gravity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -373,6 +387,14 @@
     <ClCompile Include="CMonFactory.cpp">
       <Filter>Engine\09. Factory\MonFactory</Filter>
     </ClCompile>
-    <ClCompile Include="CRigidBody.cpp" />
+    <ClCompile Include="CRigidBody.cpp">
+      <Filter>Engine\07. Component\RigidBody</Filter>
+    </ClCompile>
+    <ClCompile Include="CGround.cpp">
+      <Filter>Engine\04. Object\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="CGravity.cpp">
+      <Filter>Engine\07. Component\Gravity</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
