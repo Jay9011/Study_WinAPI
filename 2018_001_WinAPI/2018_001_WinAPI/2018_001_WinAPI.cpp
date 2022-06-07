@@ -6,6 +6,21 @@
 
 #define MAX_LOADSTRING 100
 
+typedef struct _tagRECT
+{
+	float l;
+	float t;
+	float r;
+    float b;
+} RECTANGLE, *PRECTANGLE;
+
+typedef struct _tagBullet
+{
+    RECTANGLE rc;
+    float fDist;
+    float fLimit;
+} BULLET, *PBULLET;
+
 // 전역 변수:
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
@@ -13,6 +28,9 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름�
 HWND g_hWnd;
 HDC  g_hdc;
 bool g_bLoop = true;
+LARGE_INTEGER g_tSecond;
+LARGE_INTEGER g_tTime;
+float         g_fDT;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -43,6 +61,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
 
+    QueryPerformanceFrequency(&g_tSecond);
+    QueryPerformanceCounter(&g_tTime);
+
     // PeekMessage는 메시지가 메시지큐에 없어도 바로 빠져나온다.
     // 메시지가 있을 경우 true, 없을 경우 false가 된다.
 	// 메시지가 없는 시간이 윈도우의 데드타임이다.
@@ -56,7 +77,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         // 메시지가 없을 때 (데드타임인 경우) 들어온다.
         else
         {
-
+            Run();
         }
     }
 
@@ -200,4 +221,15 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     }
     return (INT_PTR)FALSE;
+}
+
+void Run()
+{
+	// DeltaTime을 구해준다.
+    LARGE_INTEGER tTime;
+    QueryPerformanceCounter(&tTime);
+
+    g_fDT = (tTime.QuadPart - g_tTime.QuadPart) / (float)g_tSecond.QuadPart;
+
+    g_tTime = tTime;
 }
