@@ -12,6 +12,15 @@ private:
 	list<class CObj*> m_ObjList;
 
 public:
+	void AddObject(class CObj* pObj);
+
+	void Input(float fDeltaTime);
+	int  Update(float fDeltaTime);
+	int  LateUpdate(float fDeltaTime);
+	void Collision(float fDeltaTime);
+	void Render(HDC hDC, float fDeltaTime);
+
+	
 	void   SetTag(const string& strTag) { m_strTag = strTag; }
 	string GetTag() const               { return m_strTag; }
 	

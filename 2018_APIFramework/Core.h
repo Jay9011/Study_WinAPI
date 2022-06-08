@@ -26,6 +26,7 @@ private:
 private:
 	HINSTANCE   m_hInst;
 	HWND        m_hWnd;
+	HDC         m_hDC;
 	RESOULUTION m_tRS;
 	static bool m_bLoop;
 
@@ -38,6 +39,8 @@ private:
 	void Input(float fDeltaTime);
 	int  Update(float fDeltaTime);
 	int  LateUpdate(float fDeltaTime);
+	void Collision(float fDeltaTime);
+	void Render(float fDeltaTime);
 
 public:
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);

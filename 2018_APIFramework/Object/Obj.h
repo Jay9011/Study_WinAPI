@@ -1,14 +1,26 @@
 #pragma once
-#include "../Game.h"
+#include "../Core/Ref.h"
 
-class CObj
+class CObj : public CRef
 {
 protected:
 	string   m_strTag;
 	POSITION m_tPos;
 	_SIZE    m_tSize;
+	POSITION m_tPivot;
+
+protected:
+	class CScene* m_pScene;
+	class CLayer* m_pLayer;
 
 public:
+	virtual bool Init() = 0;
+	virtual void Input(float fDeltaTime);
+	virtual int  Update(float fDeltaTime);
+	virtual int  LateUpdate(float fDeltaTime);
+	virtual void Collision(float fDeltaTime);
+	virtual void Render(HDC hDC, float fDeltaTime);
+
 	string GetTag() const               { return m_strTag; }
 	void   SetTag(const string& strTag) { m_strTag = strTag; }
 	
@@ -20,25 +32,37 @@ public:
 	void  SetSize(const _SIZE& tSize) { m_tSize = tSize; }
 	void  SetSize(float x, float y)   { m_tSize.x = x; m_tSize.y = y; }
 
+	class CScene* GetScene() const               { return m_pScene; }
+	void          SetScene(class CScene* pScene) { m_pScene = pScene; }
+
+	class CLayer* GetLayer() const               { return m_pLayer; }
+	void          SetLayer(class CLayer* pLayer) { m_pLayer = pLayer; }
+
 protected:
 	CObj();
+	CObj(const CObj& obj);
 	virtual ~CObj();
 
-// =========== 레퍼런스 카운터 ===========
-protected:
-	int m_iRef;
-
 public:
-	void AddRef() { ++m_iRef; }
-	int  Release()
+	template <typename T>
+	static T* CreateObj(const string& strTag, class CLayer* pLayer = nullptr)
 	{
-		--m_iRef;
-		if (m_iRef == 0)
+		T* pObj = new T;
+
+		if (!pObj->Init())
 		{
-			delete this;
-			return 0;
+			SAFE_RELEASE(pObj);
+			return nullptr;
 		}
-		return m_iRef;
+
+		if (pLayer)
+		{
+			pLayer->AddObject(pObj);
+		}
+
+		pObj->AddRef();
+		return pObj;
 	}
+
 };
 

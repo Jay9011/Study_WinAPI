@@ -128,11 +128,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Core.h" />
+    <ClInclude Include="Core\Ref.h" />
     <ClInclude Include="Core\Timer.h" />
     <ClInclude Include="Flag.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Macro.h" />
+    <ClInclude Include="Object\MoveObj.h" />
     <ClInclude Include="Object\Obj.h" />
+    <ClInclude Include="Object\Player.h" />
+    <ClInclude Include="Object\StaticObj.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene\InGameScene.h" />
     <ClInclude Include="Scene\CScene.h" />
@@ -142,10 +146,14 @@
     <ClInclude Include="Types.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Core\Ref.cpp" />
     <ClCompile Include="Core\Timer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Core.cpp" />
+    <ClCompile Include="Object\MoveObj.cpp" />
     <ClCompile Include="Object\Obj.cpp" />
+    <ClCompile Include="Object\Player.cpp" />
+    <ClCompile Include="Object\StaticObj.cpp" />
     <ClCompile Include="Scene\InGameScene.cpp" />
     <ClCompile Include="Scene\CScene.cpp" />
     <ClCompile Include="Scene\CSceneManager.cpp" />
