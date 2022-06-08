@@ -132,10 +132,12 @@
     <ClInclude Include="Flag.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Macro.h" />
+    <ClInclude Include="Object\Obj.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene\InGameScene.h" />
     <ClInclude Include="Scene\CScene.h" />
     <ClInclude Include="Scene\CSceneManager.h" />
+    <ClInclude Include="Scene\Layer.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Types.h" />
   </ItemGroup>
@@ -143,9 +145,11 @@
     <ClCompile Include="Core\Timer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Core.cpp" />
+    <ClCompile Include="Object\Obj.cpp" />
     <ClCompile Include="Scene\InGameScene.cpp" />
     <ClCompile Include="Scene\CScene.cpp" />
     <ClCompile Include="Scene\CSceneManager.cpp" />
+    <ClCompile Include="Scene\Layer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2018_APIFramework.rc" />
