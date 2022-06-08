@@ -35,6 +35,9 @@ public:
 	
 private:
 	void Logic();
+	void Input(float fDeltaTime);
+	int  Update(float fDeltaTime);
+	int  LateUpdate(float fDeltaTime);
 
 public:
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);

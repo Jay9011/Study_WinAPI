@@ -3,6 +3,7 @@
 DEFINITION_SINGLE(CTimer)
 
 CTimer::CTimer()
+	: m_fTimeScale(1.f)
 {
 	
 }
