@@ -12,6 +12,8 @@ public:
 
 public:
 	void OnCollisionEnter(CCollider* _pOther) override;
+	void OnCollision(CCollider* _pOther) override;
+	void OnCollisionExit(CCollider* _pOther) override;
 
 public:
 	CGround();

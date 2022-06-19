@@ -57,9 +57,9 @@ void CPlayer::update()
 	update_state();
 	update_animation();
 
-	if (KEY_TAP(KEY::SPACE))
+	if (KEY_TAP(KEY::P))
 	{
-		CreateMissile();
+		SetPos(Vec2(640.f, 384.f));
 	}
 	
 	GetAnimator()->update();
@@ -94,27 +94,41 @@ void CPlayer::update_state()
 	if (KEY_TAP(KEY::W))
 	{
 		m_iDir = PLAYER_DIRECTION::UP;
-		m_eCurState = PLAYER_STATE::WALK;
+		if(PLAYER_STATE::JUMP != m_eCurState)
+			m_eCurState = PLAYER_STATE::WALK;
 	}
 	else if (KEY_TAP(KEY::S))
 	{
 		m_iDir = PLAYER_DIRECTION::DOWN;
-		m_eCurState = PLAYER_STATE::WALK;
+		if (PLAYER_STATE::JUMP != m_eCurState)
+			m_eCurState = PLAYER_STATE::WALK;
 	}
 	else if (KEY_TAP(KEY::A))
 	{
 		m_iDir = PLAYER_DIRECTION::LEFT;
-		m_eCurState = PLAYER_STATE::WALK;
+		if (PLAYER_STATE::JUMP != m_eCurState)
+			m_eCurState = PLAYER_STATE::WALK;
 	}
 	else if (KEY_TAP(KEY::D))
 	{
 		m_iDir = PLAYER_DIRECTION::RIGHT;
-		m_eCurState = PLAYER_STATE::WALK;
+		if (PLAYER_STATE::JUMP != m_eCurState)
+			m_eCurState = PLAYER_STATE::WALK;
 	}
 	
-	if (0.f == GetRigidBody()->GetSpeed())
+	if (0.f == GetRigidBody()->GetSpeed() && PLAYER_STATE::JUMP != m_eCurState)
 	{
 		m_eCurState = PLAYER_STATE::IDLE;
+	}
+	
+	if (KEY_TAP(KEY::SPACE))
+	{
+		//CreateMissile();
+		m_eCurState = PLAYER_STATE::JUMP;
+		if (GetRigidBody())
+		{
+			GetRigidBody()->AddVelocity(Vec2(0.f, -200.f));
+		}
 	}
 }
 
@@ -203,6 +217,20 @@ void CPlayer::update_animation()
 		break;
 	case PLAYER_STATE::ATTCK:
 		break;
+	case PLAYER_STATE::JUMP:
+		switch (m_iDir)
+		{
+		case PLAYER_DIRECTION::LEFT:
+			GetAnimator()->Play(L"IDLE_LEFT", false);
+			break;
+		case PLAYER_DIRECTION::RIGHT:
+			GetAnimator()->Play(L"IDLE_RIGHT", false);
+			break;
+		default:
+			GetAnimator()->Play(L"IDLE_RIGHT", false);
+			break;
+		}
+		break;
 	case PLAYER_STATE::DEAD:
 		break;
 	}
@@ -211,4 +239,17 @@ void CPlayer::update_animation()
 void CPlayer::update_gravity()
 {
 	GetRigidBody()->AddForce(Vec2(0.f, 500.f));
+}
+
+void CPlayer::OnCollisionEnter(CCollider* _pOther)
+{
+	CObject* pOtherObj = _pOther->GetObj();
+	if (L"Ground" == _pOther->GetObj()->GetName())
+	{
+		Vec2 vPos = GetPos();
+		if (vPos.y < pOtherObj->GetPos().y)
+		{
+			m_eCurState = PLAYER_STATE::IDLE;
+		}
+	}
 }

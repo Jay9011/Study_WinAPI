@@ -143,6 +143,7 @@ void CScene_Start::Enter()
 
 	// ¶¥ ¹°Ã¼ ¹èÄ¡
 	CObject* pGound = new CGround;
+	pGound->SetName(L"Ground");
 	pGound->SetPos(Vec2(640.f, 584.f));
 	pGound->SetScale(Vec2(200.f, 60.f));
 	AddObject(pGound, GROUP_TYPE::GROUND);

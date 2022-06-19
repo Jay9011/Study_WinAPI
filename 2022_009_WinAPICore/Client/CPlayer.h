@@ -49,6 +49,8 @@ private:
 	void update_move();
 	void update_animation();
 	void update_gravity();
+
+	virtual void OnCollisionEnter(CCollider* _pOther);
 	
 public:
 	CPlayer();
