@@ -30,20 +30,38 @@ CPlayer::CPlayer()
 	CreateRigidBody();
 
 	// Texture 로딩하기
-	CTexture* pTex = CResMgr::GetInst()->LoadTexture(L"PlayerTex", L"texture\\link_0.bmp");
+	//CTexture* pTex = CResMgr::GetInst()->LoadTexture(L"PlayerTex", L"texture\\link_0.bmp");
 	CreateAnimator();
-	
-	GetAnimator()->CreateAnimation(L"IDLE_UP"   , pTex, Vec2(0.f, 130.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .5f,  1);
-	GetAnimator()->CreateAnimation(L"IDLE_DOWN" , pTex, Vec2(0.f,   0.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .5f,  3);
-	GetAnimator()->CreateAnimation(L"IDLE_LEFT" , pTex, Vec2(0.f,  65.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .5f,  3);
-	GetAnimator()->CreateAnimation(L"IDLE_RIGHT", pTex, Vec2(0.f, 195.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .5f,  3);
-	
-	GetAnimator()->CreateAnimation(L"WALK_UP"   , pTex, Vec2(0.f, 390.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .1f, 10);
-	GetAnimator()->CreateAnimation(L"WALK_DOWN" , pTex, Vec2(0.f, 260.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .1f, 10);
-	GetAnimator()->CreateAnimation(L"WALK_LEFT" , pTex, Vec2(0.f, 325.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .1f, 10);
-	GetAnimator()->CreateAnimation(L"WALK_RIGHT", pTex, Vec2(0.f, 455.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .1f, 10);
 
-	GetAnimator()->Play(L"IDLE_DOWN", true);
+	// Animation 파일로 로드하기
+	GetAnimator()->LoadAnimation(L"animation\\player_idle_up.anim");
+	GetAnimator()->LoadAnimation(L"animation\\player_idle_down.anim");
+	GetAnimator()->LoadAnimation(L"animation\\player_idle_left.anim");
+	GetAnimator()->LoadAnimation(L"animation\\player_idle_right.anim");
+	GetAnimator()->LoadAnimation(L"animation\\player_walk_up.anim");
+	GetAnimator()->LoadAnimation(L"animation\\player_walk_down.anim");
+	GetAnimator()->LoadAnimation(L"animation\\player_walk_left.anim");
+	GetAnimator()->LoadAnimation(L"animation\\player_walk_right.anim");
+	
+	//GetAnimator()->CreateAnimation(L"IDLE_UP"   , pTex, Vec2(0.f, 130.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .5f,  1);
+	//GetAnimator()->CreateAnimation(L"IDLE_DOWN" , pTex, Vec2(0.f,   0.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .5f,  3);
+	//GetAnimator()->CreateAnimation(L"IDLE_LEFT" , pTex, Vec2(0.f,  65.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .5f,  3);
+	//GetAnimator()->CreateAnimation(L"IDLE_RIGHT", pTex, Vec2(0.f, 195.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .5f,  3);
+
+	//GetAnimator()->CreateAnimation(L"WALK_UP"   , pTex, Vec2(0.f, 390.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .1f, 10);
+	//GetAnimator()->CreateAnimation(L"WALK_DOWN" , pTex, Vec2(0.f, 260.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .1f, 10);
+	//GetAnimator()->CreateAnimation(L"WALK_LEFT" , pTex, Vec2(0.f, 325.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .1f, 10);
+	//GetAnimator()->CreateAnimation(L"WALK_RIGHT", pTex, Vec2(0.f, 455.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), .1f, 10);
+
+	//// Animation 저장해보기
+	//GetAnimator()->FindAnimation(L"IDLE_UP")->Save(L"animation\\player_idle_up.anim");
+	//GetAnimator()->FindAnimation(L"IDLE_DOWN")->Save(L"animation\\player_idle_down.anim");
+	//GetAnimator()->FindAnimation(L"IDLE_LEFT")->Save(L"animation\\player_idle_left.anim");
+	//GetAnimator()->FindAnimation(L"IDLE_RIGHT")->Save(L"animation\\player_idle_right.anim");
+	//GetAnimator()->FindAnimation(L"WALK_UP")->Save(L"animation\\player_walk_up.anim");
+	//GetAnimator()->FindAnimation(L"WALK_DOWN")->Save(L"animation\\player_walk_down.anim");
+	//GetAnimator()->FindAnimation(L"WALK_LEFT")->Save(L"animation\\player_walk_left.anim");
+	//GetAnimator()->FindAnimation(L"WALK_RIGHT")->Save(L"animation\\player_walk_right.anim");
 
 	// Gravity Setting
 	CreateGravity();

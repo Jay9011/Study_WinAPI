@@ -36,3 +36,7 @@ void Safe_Delete_Map(map<T1, T2>& _map)
 	}
 	_map.clear();
 }
+
+// wstring 저장과 불러오기
+void SaveWString(const wstring& _str, FILE* _pFile);
+void LoadWString(wstring& _str, FILE* _pFile);

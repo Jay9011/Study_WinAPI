@@ -40,3 +40,27 @@ void ChangeAIState(AI* _pAI, MON_STATE _eNextState)
 
 	CEventMgr::GetInst()->AddEvent(evn);
 }
+
+void SaveWString(const wstring& _str, FILE* _pFile)
+{
+	// Animation 의 이름을 저장한다. (데이터 직렬화)
+	const wchar_t* pStrName = _str.c_str();
+	size_t iLen = _str.length();
+
+	// 문자열 길이 저장
+	fwrite(&iLen, sizeof(size_t), 1, _pFile);
+	// 문자 저장 (문자 길이만큼 저장)
+	fwrite(pStrName, sizeof(wchar_t), iLen, _pFile);
+}
+
+void LoadWString(wstring& _str, FILE* _pFile)
+{
+	// 문자열 길이 불러오기
+	size_t iLen = 0;
+	fread(&iLen, sizeof(size_t), 1, _pFile);
+	// 문자 불러오기 (문자열 길이만큼 로드)
+	wchar_t szBuff[256] = {};
+	fread(szBuff, sizeof(wchar_t), iLen, _pFile);
+
+	_str = szBuff;
+}
