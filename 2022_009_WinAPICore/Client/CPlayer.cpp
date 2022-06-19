@@ -91,25 +91,25 @@ void CPlayer::CreateMissile()
 
 void CPlayer::update_state()
 {
-	if (KEY_TAP(KEY::W))
+	if (KEY_HOLD(KEY::W))
 	{
 		m_iDir = PLAYER_DIRECTION::UP;
 		if(PLAYER_STATE::JUMP != m_eCurState)
 			m_eCurState = PLAYER_STATE::WALK;
 	}
-	else if (KEY_TAP(KEY::S))
+	else if (KEY_HOLD(KEY::S))
 	{
 		m_iDir = PLAYER_DIRECTION::DOWN;
 		if (PLAYER_STATE::JUMP != m_eCurState)
 			m_eCurState = PLAYER_STATE::WALK;
 	}
-	else if (KEY_TAP(KEY::A))
+	else if (KEY_HOLD(KEY::A))
 	{
 		m_iDir = PLAYER_DIRECTION::LEFT;
 		if (PLAYER_STATE::JUMP != m_eCurState)
 			m_eCurState = PLAYER_STATE::WALK;
 	}
-	else if (KEY_TAP(KEY::D))
+	else if (KEY_HOLD(KEY::D))
 	{
 		m_iDir = PLAYER_DIRECTION::RIGHT;
 		if (PLAYER_STATE::JUMP != m_eCurState)
@@ -127,7 +127,7 @@ void CPlayer::update_state()
 		m_eCurState = PLAYER_STATE::JUMP;
 		if (GetRigidBody())
 		{
-			GetRigidBody()->AddVelocity(Vec2(0.f, -200.f));
+			GetRigidBody()->SetVelocity(Vec2(GetRigidBody()->GetVelocity().x, -300.f));
 		}
 	}
 }
@@ -156,20 +156,24 @@ void CPlayer::update_move()
 
 	if (KEY_TAP(KEY::W))
 	{
-		pRigid->AddVelocity(Vec2(0.f, -100.f));
+		if(pRigid->GetVelocity().y == 0.f)
+			pRigid->AddVelocity(Vec2(0.f, -100.f));
 	}
 	if (KEY_TAP(KEY::S))
 	{
-		pRigid->AddVelocity(Vec2(0.f, 100.f));
+		if (pRigid->GetVelocity().y == 0.f)
+			pRigid->AddVelocity(Vec2(0.f, 100.f));
 	}
 
 	if (KEY_TAP(KEY::A))
 	{
-		pRigid->AddVelocity(Vec2(-100.f, 0.f));
+		if (pRigid->GetVelocity().x == 0.f)
+			pRigid->AddVelocity(Vec2(-100.f, 0.f));
 	}
 	if (KEY_TAP(KEY::D))
 	{
-		pRigid->AddVelocity(Vec2(100.f, 0.f));
+		if (pRigid->GetVelocity().x == 0.f)
+			pRigid->AddVelocity(Vec2(100.f, 0.f));
 	}
 }
 
